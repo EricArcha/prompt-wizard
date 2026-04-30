@@ -31,6 +31,7 @@ Supported languages: `zh`, `en`, `ja`, `ko`, `es`, `fr`, `de`, `ru`, `pt`
 
 ```bash
 git clone https://github.com/EricArcha/prompt-wizard.git ~/.claude/skills/prompt-wizard
+bash ~/.claude/skills/prompt-wizard/scripts/setup.sh
 ```
 
 For shorter trigger, add to `~/.claude/settings.json`:
@@ -46,6 +47,7 @@ For shorter trigger, add to `~/.claude/settings.json`:
 
 ```bash
 git clone https://github.com/EricArcha/prompt-wizard.git ~/.openclaw/skills/prompt-wizard
+bash ~/.openclaw/skills/prompt-wizard/scripts/setup.sh
 ```
 
 Or symlink to share with Claude Code:
