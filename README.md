@@ -98,6 +98,16 @@ prompt-wizard/
 - Case library: [awesome-gpt-image-2-prompts](https://github.com/EvoLinkAI/awesome-gpt-image-2-prompts) (CC BY 4.0) by EvoLinkAI and community
 - Skill design: built for Claude Code and OpenClaw
 
+## Roadmap
+
+- [x] Conversational + pro mode generation
+- [x] Style anchoring with case library
+- [x] Bundled case library with local images
+- [x] Bilingual documentation (EN/ZH)
+- [ ] ClawHub registry publication
+- [ ] Multi-image prompt support (sequences, grids, storyboards)
+- [ ] User prompt history / favorite collection
+
 ## License
 
 MIT

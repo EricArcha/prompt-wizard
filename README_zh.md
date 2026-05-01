@@ -98,6 +98,16 @@ prompt-wizard/
 - 案例库：[awesome-gpt-image-2-prompts](https://github.com/EvoLinkAI/awesome-gpt-image-2-prompts) (CC BY 4.0)，由 EvoLinkAI 及社区维护
 - Skill 设计：为 Claude Code 和 OpenClaw 构建
 
+## 路线图
+
+- [x] 对话式 + 专业模式生成
+- [x] 案例库风格锚定
+- [x] 内置案例库及本地图片
+- [x] 中英双语文档
+- [ ] ClawHub 注册发布
+- [ ] 多图 prompt 支持（序列、网格、分镜）
+- [ ] 用户 prompt 历史 / 收藏
+
 ## 许可证
 
 MIT
