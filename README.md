@@ -38,10 +38,13 @@ Prompt Wizard asks 2-5 clarifying questions (text/copy, market, style preference
 | `/wizard templates [cat]` | Browse 7 categories of community-verified templates | `/wizard templates portrait` |
 | `/wizard lang [code]` | Switch conversation language (prompts always English) | `/wizard lang ja` |
 | `/wizard update-library` | Fetch latest prompt library from upstream | `/wizard update-library` |
+| `/wizard version` | Show skill and library version info | `/wizard version` |
 
 **Refine after generation:** `darker`, `brighter`, `more minimalist`, `closer crop`, `warmer tones`, etc.
 
-**Style anchoring in `/wizard`:** The skill searches the case library for matching references and lets you anchor your prompt to a specific case's lighting, composition, or palette — before generation.
+**Style anchoring in `/wizard`:** The skill searches the case library for matching references and anchors your prompt to a specific case's lighting, composition, or palette — this step is part of the default workflow and must be confirmed before generation.
+
+**Multi-prompt mode (`/wizard multi`):** For 4+ prompts or narrative series, generates the first prompt for your review before producing the rest — ensuring the style direction is locked in.
 
 **Market dimension:** Both modes ask about target market/audience (Chinese, Japanese, Korean, Western, global) to align the aesthetic direction.
 
@@ -100,7 +103,7 @@ Prompt Wizard is built on analysis of 175+ community-verified GPT-Image-2 prompt
 2. **Style anchoring** — matches your vision to proven case patterns before generation
 3. **6-dimension coverage** — Subject → Environment → Lighting → Composition → Style → Technical
 4. **English output** — all prompts generated in English for optimal ChatGPT Image 2 performance
-5. **Case references with images** — local file paths so you can view reference images directly
+5. **Case-grounded generation** — every prompt is anchored to at least one community-verified case from the library; Related Cases section is mandatory in output
 
 ## File Structure
 

@@ -4,6 +4,23 @@ All notable changes to Prompt Wizard will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.0.2] — 2026-05-02
+
+### Added
+- `/wizard version` command — displays skill and library version info
+- Workflow Compliance section with mandatory case grounding requirements
+- Common Violations (Anti-Patterns) reference table to prevent known failure modes
+- ⛔ GATE markers at critical confirmation points in multi-prompt ≥4 strategy
+- Silent case library search requirement in multi and pro modes
+- Round budget for multi mode
+
+### Changed
+- **Breaking:** Case grounding is now MANDATORY — every prompt must reference at least one case library entry
+- Style Anchor step no longer skippable (user must explicitly opt out)
+- Prompt Generation Rule 6 changed from "Case-anchored (if chosen)" to "Case-grounded (MANDATORY)"
+- Multi mode ≥4 strategy now requires first-prompt confirmation before generating remaining prompts
+- Output Format: Related Cases section now mandatory
+
 ## [1.0.1] — 2026-05-01
 
 ### Added
