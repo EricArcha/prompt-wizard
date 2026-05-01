@@ -2,6 +2,9 @@
 
 > ChatGPT Image 2 高质量提示词生成器。描述你的想法，获得专业级英文 prompt。
 
+[![ChatGPT Image 2](https://img.shields.io/badge/ChatGPT-Image_2-10a37f?logo=openai&logoColor=white)](https://openai.com/chatgpt)
+[![Claude Code](https://img.shields.io/badge/Claude-Code-d97706?logo=anthropic&logoColor=white)](https://claude.ai)
+[![OpenClaw](https://img.shields.io/badge/OpenClaw-Compatible-7c3aed)](https://openclaw.ai)
 [![English](https://img.shields.io/badge/English-View-111111)](README.md)
 [![中文](https://img.shields.io/badge/中文-默认-ef476f)](README_zh.md)
 
