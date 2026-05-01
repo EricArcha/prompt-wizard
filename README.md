@@ -47,13 +47,15 @@ Supported conversation languages: `zh`, `en`, `ja`, `ko`, `es`, `fr`, `de`, `ru`
 
 ## Install
 
-### Claude Code
+### Claude Code (full install)
 
 ```bash
 git clone https://github.com/EricArcha/prompt-wizard.git ~/.claude/skills/prompt-wizard
 ```
 
-### OpenClaw
+Includes 175+ case images (~90MB total) for visual reference.
+
+### OpenClaw (full install)
 
 ```bash
 git clone https://github.com/EricArcha/prompt-wizard.git ~/.openclaw/skills/prompt-wizard
@@ -64,11 +66,13 @@ Or symlink to share with Claude Code:
 ln -s ~/.claude/skills/prompt-wizard ~/.openclaw/skills/prompt-wizard
 ```
 
-### ClawHub (coming soon)
+### ClawHub (lightweight install)
 
 ```bash
 npx clawhub@latest install prompt-wizard
 ```
+
+Lightweight version (~8MB, case text included, images downloadable on demand). After install, run `/wizard update-library` to fetch the full case library with 175+ reference images.
 
 ### Update the prompt library
 
@@ -130,7 +134,7 @@ prompt-wizard/
 - [x] Bundled case library with local images
 - [x] Bilingual documentation (EN/ZH)
 - [ ] ClawHub registry publication
-- [ ] Multi-image prompt support (sequences, grids, storyboards)
+- [x] Multi-image prompt support (sequences, grids, storyboards)
 - [ ] User prompt history / favorite collection
 
 ## License

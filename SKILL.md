@@ -25,7 +25,8 @@ When the user invokes `/wizard` (no arguments), display this help card:
 
 Commands:
   /wizard [idea]    Describe your vision, I'll fill the gaps
-  /wizard pro       Step-by-step guided mode (7 steps)
+  /wizard pro       Step-by-step guided mode (8 steps)
+  /wizard multi     Generate multiple prompts in one session (batch, variations, series)
   /wizard examples  Curated showcase of best prompt results
   /wizard templates Browse 7 categories, 175+ community templates
   /wizard lang      Switch conversation language (prompts stay English)
@@ -41,7 +42,9 @@ Describe what you want to create ↓
 
 1. **Prompt language:** ALL generated prompts are in English, regardless of conversation language. English prompts produce the best results with ChatGPT Image 2.
 2. **Conversation language:** Adapt to the user's language. Anatomy notes and case references in user's language.
-3. **Be concise:** One question at a time. Max 4 rounds total (market + style-anchor + up to 2 dimension questions).
+3. **Be concise:** One question at a time. Max 5 rounds total (text + market + style-anchor + up to 2 dimension questions).
+4. **Text & branding:** Logos/icons are silently excluded from prompts (prompts cannot render logos accurately; add them to generated images separately). Brand names are kept as product descriptors. Proactively ask users: "Any text or copy to appear in the image?" — warn that ChatGPT Image 2 renders text unreliably.
+5. **Case image availability:** When displaying case images, check if the file path exists. If images are not installed, show the case with a hint. Case text and source URLs (x.com) are always available.
 
 ## Commands
 
@@ -49,28 +52,52 @@ Describe what you want to create ↓
 
 Default conversational mode. Flow:
 
-1. **Understand intent** — Parse the user's description, identify the most likely category (ecommerce, ad-creative, portrait, poster, character, UI, comparison).
-2. **Market question** (1 round) — "Target market/audience? e.g. Chinese (小红书/新中式), Japanese (wabi-sabi/minimal), Korean (K-beauty/clean), Western (editorial/cinematic), or global/international?"
-3. **Style anchor** (1 round, skippable) — Search the case library for 2-3 matching cases in the identified category. Present each with: title, one-line description, local image path. Ask: "Anchor to a case's style, or continue?" User can pick a case's specific aspect (lighting, composition, palette, mood) or skip.
-4. **Dimension check** (≤2 rounds) — Check 6 dimensions: Subject, Environment, Lighting, Composition, Style, Technical. Ask only the most critical missing dimensions. If user defers ("you decide"), autofill.
-5. **Generate** — Output English prompt + anatomy notes + case refs with local image paths + X.com links.
-6. **Offer refine** — "Refine? e.g. darker | brighter | more minimalist | closer crop | warmer tones | more dramatic"
+1. **Understand intent** — Parse the user's description, identify the most likely category (ecommerce, ad-creative, portrait, poster, character, UI, comparison). Silently strip any logo/icon references from the concept (prompts cannot render logos accurately; add them to generated images separately). Keep brand names as product descriptors.
+2. **Text inquiry** (1 round) — "Any text or copy to appear in the image? (e.g. slogan, title, label, brand name)" If yes, capture exact wording and note: "ChatGPT Image 2 renders text unreliably — consider adding text to the image manually afterwards."
+3. **Market question** (1 round) — "Target market/audience? e.g. Chinese (小红书/新中式), Japanese (wabi-sabi/minimal), Korean (K-beauty/clean), Western (editorial/cinematic), or global/international?"
+4. **Style anchor** (1 round, skippable) — Search the case library for 2-3 matching cases in the identified category. Present each with: title, one-line description, local image path (if available). Ask: "Anchor to a case's style, or continue?" User can pick a case's specific aspect (lighting, composition, palette, mood) or skip.
+5. **Dimension check** (≤2 rounds) — Check 6 dimensions: Subject, Environment, Lighting, Composition, Style, Technical. Ask only the most critical missing dimensions. If user deferred text to decide later, confirm exact wording here. If user defers ("you decide"), autofill.
+6. **Generate** — Output English prompt + anatomy notes + case refs with local image paths (if available) + X.com links.
+7. **Offer refine** — "Refine? e.g. darker | brighter | more minimalist | closer crop | warmer tones | more dramatic"
 
-**Round budget:** Market (1) + Style anchor (1) + Dimensions (2) = max 4 rounds. Stop earlier if sufficient information gathered.
+**Round budget:** Text (1) + Market (1) + Style anchor (1) + Dimensions (2) = max 5 rounds. Stop earlier if sufficient information gathered.
 
 ### /wizard pro
 
-Structured mode. 7 steps, one at a time. Support `/back` and `/skip`.
+Structured mode. 8 steps, one at a time. Support `/back` and `/skip`.
 
-1. **Subject** — "Describe the main subject: person/product/scene? Key features, pose, expression?"
+1. **Subject** — "Describe the main subject: person/product/scene? Key features, pose, expression?" Silently strip any logo/icon references (prompts can't render logos accurately).
 2. **Environment** — "Setting: indoor/outdoor? Time of day? Background elements?"
-3. **Market** — "Target market/audience aesthetic? Chinese/Japanese/Korean/Western/global?"
-4. **Lighting** — "Lighting style: soft/hard/dramatic? Direction? Color temperature?"
-5. **Composition** — "Camera angle and lens? Close-up/wide? e.g. 85mm portrait, 35mm street"
-6. **Style** — "Visual style: photorealistic/illustration/3D? Genre or era references?"
-7. **Technical** — "Aspect ratio? Resolution? Negative prompt exclusions?"
+3. **Text/Copy** — "Any text or copy to appear in the image? (e.g. slogan, title, label, brand name)" Note: ChatGPT Image 2 renders text unreliably.
+4. **Market** — "Target market/audience aesthetic? Chinese/Japanese/Korean/Western/global?"
+5. **Lighting** — "Lighting style: soft/hard/dramatic? Direction? Color temperature?"
+6. **Composition** — "Camera angle and lens? Close-up/wide? e.g. 85mm portrait, 35mm street"
+7. **Style** — "Visual style: photorealistic/illustration/3D? Genre or era references?"
+8. **Technical** — "Aspect ratio? Resolution? Negative prompt exclusions?"
 
 After all steps: generate English prompt + anatomy + case refs + refine offer.
+
+### /wizard multi [idea]
+
+Multi-prompt generation. Generate multiple prompts in one session.
+
+**Trigger:** Explicit `/wizard multi` command, or natural language keywords (e.g. "3 variations", "batch of", "a series of", "generate 5", "a set of").
+
+**Flow:**
+
+1. **Parse intent & count** — Determine how many prompts to generate from the user's description. Ask: "How many prompts do you need?" if unclear.
+2. **Text inquiry** — Same as `/wizard` mode: ask about text/copy needs, warn about text rendering limitations. Silently strip logos.
+3. **Market question** — Same as `/wizard` mode.
+4. **Dimension collect** — Collect core dimensions (subject, environment, lighting, composition, style, technical) for the base concept.
+5. **Generate by strategy:**
+   - **≤3 prompts** — Collect all dimensions for each variant, batch generate all prompts, display one by one with refine offer for each.
+   - **≥4 prompts or series/narrative** — Generate the first prompt, confirm style anchor and quality, then anchor that style for the remaining prompts. Generate remaining and display with per-prompt refine.
+6. **Display** — Numbered output with each prompt, Key Choices, and Refine entry. Summary of all variants at end.
+
+**Scenarios:**
+- **Same concept, multiple variations** — Different lighting, composition, or style for the same subject
+- **Batch independent** — Different products/scenes, each gets its own prompt
+- **Series/narrative** — Storyboard frames, campaign sequence, brand narrative
 
 ### /wizard examples
 
@@ -150,11 +177,11 @@ Prompts always remain English regardless of conversation language.
 ## 📚 Related Cases
 
 - **{Case title}** — {relevance note}
-  🖼️ {local image path}
+  🖼️ {local image path or "(`/wizard update-library` to view images)"}
   🔗 {x.com link}
 
 - **{Case title}** — {relevance note}
-  🖼️ {local image path}
+  🖼️ {local image path or "(`/wizard update-library` to view images)"}
   🔗 {x.com link}
 
 💡 On OpenClaw: use the image display feature to push case images to the chat window.
@@ -178,6 +205,8 @@ The case library is at `data/awesome-gpt-image-2-prompts/`. Do NOT load entire f
 - X.com link: `https://x.com/...`
 - Author: `@handle`
 - Image path: `images/{category}_case{N}/output.jpg`
+
+**Missing images:** The `images/` directory may not be installed (ClawHub light install). Always check if image path exists before displaying. If not available, show: "📷 Case images not installed — run \`/wizard update-library\` to download." Case text and x.com links are always available.
 
 **Style anchoring extraction:** When user picks a case, read the prompt section and extract the key techniques (lighting approach, composition style, color palette, material treatment). Incorporate these into the generated prompt without copying verbatim.
 

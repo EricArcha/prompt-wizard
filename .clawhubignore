@@ -1,0 +1,3 @@
+# Exclude case library images (~82MB) to keep ClawHub package under 50MB
+# Case text files (cases/*.md) are retained — they're essential for case browsing
+data/awesome-gpt-image-2-prompts/images/
