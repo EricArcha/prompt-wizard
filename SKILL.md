@@ -1,5 +1,5 @@
 ---
-name: prompt-wizard
+name: wizard
 description: Generate high-quality prompts for ChatGPT Image 2. Use when user wants to create AI image prompts, needs GPT-Image-2 prompt writing help, describes an image they want to generate, or asks about image generation prompting. Supports conversational generation and structured professional mode.
 user-invocable: true
 metadata:
