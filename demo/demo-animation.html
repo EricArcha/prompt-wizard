@@ -1,0 +1,360 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=1920">
+<title>Prompt Wizard · Demo Animation</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400&display=swap" rel="stylesheet">
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html, body { width: 100%; height: 100%; overflow: hidden; background: #0A0C10; }
+  :root {
+    --bg-deep: #0A0C10; --surface: #13161C; --border: #1E2230;
+    --gold: #F59E0B; --purple: #8B5CF6; --green: #10B981; --blue: #60A5FA;
+    --text: #F1F0ED; --text-secondary: #8B8986; --text-dim: #52504D;
+    --terminal-green: #4ADE80; --terminal-prompt: #F59E0B;
+  }
+  .no-record { display: none !important; }
+  @keyframes shimmer { 0%{opacity:0.3} 50%{opacity:1} 100%{opacity:0.3} }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-6px)} }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="text/babel">
+(function(){
+/* ━━━━ animations.jsx inline engine ━━━━ */
+const {createContext,useContext,useState,useEffect,useRef,useCallback,useMemo}=React;
+const TC=createContext({time:0,duration:10,playing:false});
+const SC=createContext(null);
+const Easing={
+  linear:t=>t,
+  expoOut:t=>t===1?1:1-Math.pow(2,-10*t),
+  overshoot:t=>{const c1=1.70158,c3=c1+1;return 1+c3*Math.pow(t-1,3)+c1*Math.pow(t-1,2);},
+  spring:t=>{const c=2*Math.PI/3;return t===0?0:t===1?1:Math.pow(2,-10*t)*Math.sin((t*10-0.75)*c)+1;},
+  easeOut:t=>1-(1-t)*(1-t),
+};
+function interp(t,input,output,easing){
+  const[iS,iE]=input,[oS,oE]=output;
+  if(t<=iS)return oS;if(t>=iE)return oE;
+  let p=(t-iS)/(iE-iS);if(easing)p=easing(p);
+  return oS+(oE-oS)*p;
+}
+function useTime(){return useContext(TC).time;}
+function useSprite(){return useContext(SC)||{t:0,elapsed:0,duration:0};}
+
+function Stage({duration=10,width=1920,height=1080,loop=true,children,bgColor='#0A0C10'}){
+  const[time,setTime]=useState(0);const[playing,setPlaying]=useState(true);
+  const[scale,setScale]=useState(1);const raf=useRef(null);
+  const effLoop=(typeof window!=='undefined'&&window.__recording)?false:loop;
+  useEffect(()=>{
+    function u(){const vw=window.innerWidth,vh=window.innerHeight-56,s=Math.min(vw/width,vh/height);setScale(s);}
+    u();window.addEventListener('resize',u);return()=>window.removeEventListener('resize',u);
+  },[width,height]);
+  useEffect(()=>{
+    if(!playing)return;let c=false;let last=null;
+    function tick(now){
+      if(c)return;
+      if(last===null){last=now;if(typeof window!=='undefined')window.__ready=true;}
+      const dt=(now-last)/1000;last=now;
+      setTime(prev=>{const n=prev+dt;return n>=duration?effLoop?0:duration-0.001:n;});
+      raf.current=requestAnimationFrame(tick);
+    }
+    function go(){if(!c)raf.current=requestAnimationFrame(tick);}
+    if(typeof document!=='undefined'&&document.fonts&&document.fonts.ready)document.fonts.ready.then(go);else go();
+    return()=>{c=true;cancelAnimationFrame(raf.current);};
+  },[playing,duration,effLoop]);
+  const seek=useCallback((e)=>{const r=e.currentTarget.getBoundingClientRect();setTime(Math.max(0,Math.min(duration,(e.clientX-r.left)/r.width*duration)));setPlaying(false);},[duration]);
+  useEffect(()=>{if(typeof window!=='undefined')window.__seek=(t)=>setTime(Math.max(0,Math.min(duration,t)));},[duration]);
+  return React.createElement(TC.Provider,{value:{time,duration,playing,setPlaying,setTime}},
+    React.createElement('div',{style:{position:'fixed',inset:0,background:'#000',display:'flex',flexDirection:'column'}},
+      React.createElement('div',{style:{flex:1,position:'relative',overflow:'hidden'}},
+        React.createElement('div',{style:{position:'absolute',top:'50%',left:'50%',transformOrigin:'center center',width,height,background:bgColor,overflow:'hidden',transform:`translate(-50%,-50%) scale(${scale})`}},children)),
+      React.createElement('div',{className:'no-record',style:{position:'fixed',bottom:0,left:0,right:0,background:'rgba(0,0,0,0.85)',backdropFilter:'blur(8px)',padding:'8px 16px',display:'flex',alignItems:'center',gap:12,color:'#fff',fontSize:11,zIndex:100}},
+        React.createElement('button',{onClick:()=>setPlaying(p=>!p),style:{background:'none',border:'1px solid rgba(255,255,255,0.3)',color:'#fff',padding:'4px 10px',borderRadius:3,cursor:'pointer',fontSize:11}},playing?'⏸':'▶'),
+        React.createElement('button',{onClick:()=>setTime(0),style:{background:'none',border:'1px solid rgba(255,255,255,0.3)',color:'#fff',padding:'4px 10px',borderRadius:3,cursor:'pointer',fontSize:11}},'⏮'),
+        React.createElement('span',{style:{fontFamily:'monospace',minWidth:80,fontSize:10}},[`${time.toFixed(1)}s / ${duration.toFixed(1)}s`]),
+        React.createElement('div',{onMouseDown:seek,style:{flex:1,height:4,background:'rgba(255,255,255,0.15)',borderRadius:2,position:'relative',cursor:'pointer'}},
+          React.createElement('div',{style:{position:'absolute',top:0,left:0,height:'100%',width:`${time/duration*100}%`,background:'#fff',borderRadius:2,pointerEvents:'none'}}),
+          React.createElement('div',{style:{position:'absolute',top:'50%',left:`${time/duration*100}%`,width:10,height:10,background:'#fff',borderRadius:'50%',transform:'translate(-50%,-50%)',pointerEvents:'none'}})))
+    ));
+}
+
+function Sprite({start=0,end,children,style}){
+  const{time}=useContext(TC);
+  if(time<start||time>=(end==null?Infinity:end))return null;
+  return React.createElement(SC.Provider,{value:{t:(time-start)/Math.max(0.001,duration()),elapsed:time-start,duration:duration(),start,end}},
+    React.createElement('div',{style:{position:'absolute',inset:0,...style}},children));
+  function duration(){return(end==null?Infinity:end)-start;}
+}
+
+if(typeof window!=='undefined')window.Animations={Stage,Sprite,useTime,useSprite,Easing,interp};
+})();
+</script>
+
+<script type="text/babel">
+/* ━━━━━ Main Animation ━━━━━ */
+const{Stage,Sprite,useTime,useSprite,Easing:Ex,interp}=window.Animations;
+const{useState,useEffect,useRef,useMemo}=React;
+
+const D=20,W=1920,H=1080;
+
+/* ━━━ Brand Colors ━━━ */
+const C={bg:'#0A0C10',surface:'#13161C',border:'#1E2230',gold:'#F59E0B',purple:'#8B5CF6',green:'#10B981',blue:'#60A5FA',text:'#F1F0ED',textSec:'#8B8986',textDim:'#52504D',termGreen:'#4ADE80'};
+
+/* ━━━ Case images ━━━ */
+const CASE_IMGS=[
+  '../data/awesome-gpt-image-2-prompts/images/portrait_case1/output.jpg',
+  '../data/awesome-gpt-image-2-prompts/images/portrait_case28/output.jpg',
+  '../data/awesome-gpt-image-2-prompts/images/portrait_case27/output.jpg',
+];
+
+/* ━━━ Reusable: cursor blink ━━━ */
+function Cursor(){const t=useTime();return React.createElement('span',{style:{color:C.termGreen,opacity:Math.sin(t*8)>0?1:0.2}},'▎');}
+
+/* ━━━ Scene 1: Intro (0-3s) ━━━ */
+function SceneIntro(){
+  const{t}=useSprite();
+  const t1=interp(t,[0,0.4],[0,1],Ex.expoOut);
+  const t2=interp(t,[0.2,0.6],[0,1],Ex.expoOut);
+  const t3=interp(t,[0.5,0.9],[0,1],Ex.expoOut);
+  const s1=interp(t,[0,0.35],[0.3,1],Ex.overshoot);
+  const tags=['智能交互','风格锚定','高质量'];
+  return React.createElement('div',{style:{position:'absolute',inset:0,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center'}},
+    /* Stars */
+    React.createElement('div',{style:{position:'absolute',inset:0,pointerEvents:'none'}},
+      useMemo(()=>Array.from({length:100},(_,i)=>React.createElement('div',{key:i,style:{position:'absolute',
+        left:Math.random()*W,top:Math.random()*H,padding:1,background:C.gold,borderRadius:'50%',
+        opacity:0.3+Math.random()*0.4,boxShadow:`0 0 ${2+Math.random()*4}px ${C.gold}`,
+        animation:`shimmer ${2+Math.random()*4}s ease-in-out infinite`,
+        animationDelay:`${Math.random()*2}s`,
+      }})),[])
+    ),
+    /* Wizard hat */
+    React.createElement('svg',{width:120,height:120,viewBox:'0 0 120 120',fill:'none',style:{transform:`scale(${s1})`,opacity:t1,marginBottom:20,filter:`drop-shadow(0 0 30px ${C.gold}40)`}},
+      React.createElement('ellipse',{cx:60,cy:95,rx:38,ry:7,stroke:C.gold,strokeWidth:2.5}),
+      React.createElement('path',{d:'M60 18L28 88L92 88L60 18Z',stroke:C.gold,strokeWidth:2.5,fill:'none'}),
+      React.createElement('path',{d:'M60 18C65 35 80 40 60 62C40 40 55 35 60 18Z',fill:C.gold,fillOpacity:0.2}),
+      React.createElement('circle',{cx:60,cy:18,r:4,fill:C.gold}),
+    ),
+    /* Title */
+    React.createElement('h1',{style:{fontFamily:'Newsreader, Georgia, serif',fontSize:72,fontWeight:600,color:C.text,opacity:t2,letterSpacing:'0.04em',textAlign:'center',transform:`translateY(${interp(t,[0.2,0.6],[20,0],Ex.expoOut)}px)`}},
+      'Prompt',
+      React.createElement('span',{style:{color:C.gold}},' Wizard'),
+    ),
+    React.createElement('p',{style:{fontFamily:'Newsreader, Georgia, serif',fontSize:21,fontStyle:'italic',color:C.textSec,opacity:t2}},'ChatGPT Image 2 · 专业提示词生成器'),
+    /* Tags */
+    React.createElement('div',{style:{display:'flex',gap:10,marginTop:24,opacity:t3}},tags.map((tag,i)=>React.createElement('span',{key:i,style:{
+      padding:'5px 18px',border:`1px solid ${C.gold}`,borderRadius:20,fontFamily:'JetBrains Mono, monospace',fontSize:13,color:C.gold,
+      opacity:interp(t,[0.5+i*0.1,0.7+i*0.1],[0,1],Ex.expoOut)
+    }},tag)))
+  );
+}
+
+/* ━━━ Scene 2: Workflow CLI (3-9s) ━━━ */
+function SceneWorkflow(){
+  const{elapsed}=useSprite();
+  const e=elapsed; /* 0-6s local */
+
+  /* Sub-phases: cli (0-3s) → result (3-6s) — cross-fade at 2.7-3.3 */
+  const cliPhase=Math.min(1,e/3);
+  const resultPhase=Math.min(1,Math.max(0,e-2.7)/3.3);
+  const cliOpacity=interp(e,[0,0.3],[0,1],Ex.expoOut);
+  const cliY=interp(e,[0,0.3],[30,0],Ex.expoOut);
+
+  const termP=interp(cliPhase,[0,0.05],[0,1],Ex.expoOut);
+  const termY2=interp(cliPhase,[0,0.1],[20,0],Ex.expoOut);
+
+  /* Terminal typing simulation */
+  const TypingArea=()=>{
+    const [text1,setText1]=useState(''); const [text2,setText2]=useState('');
+    const [done1,setDone1]=useState(false);
+    const lines=[
+      '/wizard cinematic portrait',
+      '> Analyzing your concept...\n> Applying 6-dimension framework...\n> Style anchor: Street Neon Portrait',
+      'Final Prompt (GPT Image 2 ready):',
+    ];
+    const promptText='35mm film photography with harsh convenience store fluorescent lighting mixed with colorful neon signs from outside, authentic film grain, high contrast, slight color cast, cinematic street editorial style, intimate medium shot...';
+
+    useEffect(()=>{
+      const t=e;
+      if(t<1){
+        const len=Math.min(lines[0].length,Math.floor((t/1)*lines[0].length));
+        setText1(lines[0].slice(0,len));
+        setDone1(false);setText2('');
+      }else if(t<1.8){
+        setText1(lines[0]);setDone1(true);
+        const idx=Math.floor((t-1)/0.8*(lines[1].length));
+        setText2(lines[1].slice(0,Math.min(idx,lines[1].length-1)).replace(/\n/g,'\n'));
+      }else if(t<2.5){
+        setText1(lines[0]);setDone1(true);setText2(lines[1]);
+      }else if(t<3){
+        setText1(lines[0]);setDone1(true);setText2(lines[1]);
+      }else{
+        setText1(lines[0]);setDone1(true);setText2(lines[1]);
+      }
+    },[e]);
+
+    const showPrompt=e>1.8;
+    const promptChars=showPrompt?promptText.slice(0,Math.min(promptText.length,Math.floor(((e-1.8)/1.2)*promptText.length))):'';
+
+    return React.createElement('div',{style:{fontFamily:'JetBrains Mono, monospace',fontSize:14,lineHeight:1.6,whiteSpace:'pre-wrap',width:'100%'}},
+      /* Line 1: user input */
+      React.createElement('div',{style:{display:'flex',alignItems:'baseline',flexWrap:'wrap'}},
+        React.createElement('span',{style:{color:C.termGreen}},'$ '),
+        React.createElement('span',{style:{color:C.text}},text1),
+        !(e>1)?React.createElement(Cursor,null):null,
+      ),
+      /* Line 2: wizard response */
+      done1?React.createElement('div',{style:{marginTop:12,color:C.purple,fontSize:13,opacity:interp(e,[1,1.3],[0,1],Ex.expoOut)}},text2.split('\n').map((l,i)=>React.createElement('div',{key:i},l.replace(/^>/,'').trim()))):null,
+      /* Cursor during response */
+      done1&&!showPrompt?React.createElement('div',{style:{marginTop:4}},React.createElement(Cursor,null)):null,
+      /* Prompt output */
+      showPrompt?React.createElement('div',{style:{marginTop:16,opacity:interp(e,[1.8,2.2],[0,1],Ex.expoOut)}},
+        React.createElement('div',{style:{color:C.textSec,fontSize:11,marginBottom:4}},'📋 Final Prompt:'),
+        React.createElement('div',{style:{padding:'12px 14px',background:'rgba(245,158,11,0.06)',borderLeft:`2px solid ${C.gold}`,borderRadius:'0 6px 6px 0',fontSize:12,color:C.text,lineHeight:1.5}},promptChars),
+      ):null,
+    );
+  };
+
+  const imgOpacity=interp(resultPhase,[0.1,0.4],[0,1],Ex.expoOut);
+  const imgScale=interp(resultPhase,[0.1,0.4],[0.9,1],Ex.expoOut);
+
+  return React.createElement('div',{style:{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',padding:'50px 100px'}},
+    /* CLI panel */
+    React.createElement('div',{style:{maxWidth:900,width:'100%',opacity:cliOpacity,transform:`translateY(${cliY}px)`}},
+      React.createElement('div',{style:{background:C.surface,border:`1px solid ${C.border}`,borderRadius:14,overflow:'hidden',boxShadow:'0 20px 50px rgba(0,0,0,0.5)',opacity:termP,transform:`translateY(${termY2}px)`}},
+        React.createElement('div',{style:{display:'flex',alignItems:'center',gap:8,padding:'10px 16px',background:'rgba(255,255,255,0.03)',borderBottom:`1px solid ${C.border}`}},
+          ['#FF5F56','#FFBD2E','#27C93F'].map((c,i)=>React.createElement('div',{key:i,style:{width:10,height:10,borderRadius:'50%',background:c}})),
+          React.createElement('span',{style:{fontFamily:'JetBrains Mono, monospace',fontSize:11,color:C.textDim,marginLeft:8}},'prompt-wizard · terminal')
+        ),
+        React.createElement('div',{style:{padding:'18px 22px',minHeight:240},onClick:undefined},
+          React.createElement(TypingArea,null)
+        )
+      )
+    ),
+    /* Result image (from 5s, overlapping) */
+    React.createElement('div',{style:{position:'absolute',right:100,top:'50%',transform:`translateY(-50%) scale(${imgScale})`,opacity:imgOpacity,pointerEvents:'none',transition:'opacity 0.3s'}},
+      React.createElement('div',{style:{width:240,borderRadius:12,overflow:'hidden',border:`1px solid ${C.border}`,boxShadow:'0 10px 40px rgba(0,0,0,0.6)'}},
+        React.createElement('img',{src:CASE_IMGS[0],style:{width:'100%',display:'block'},alt:'Case result'}),
+        React.createElement('div',{style:{padding:'8px 10px',background:C.surface,borderTop:`1px solid ${C.border}`,fontFamily:'JetBrains Mono, monospace',fontSize:10,color:C.textSec}},'✨ ChatGPT Image 2 · Street Neon'),
+      )
+    )
+  );
+}
+
+/* ━━━ Scene 3: Feature Burst (9-17s) ━━━ */
+function SceneFeatures(){
+  const{elapsed}=useSprite();
+  const e=elapsed; /* 0-8s local */
+
+  const features=[
+    {icon:'📚',title:'175+ Cases',desc:'Community-validated style anchors',color:C.gold},
+    {icon:'🎯',title:'6-Dimension Framework',desc:'Structured prompt engineering',color:C.purple},
+    {icon:'⚡',title:'Pro Mode',desc:'7-step guided workflow',color:C.blue},
+    {icon:'🌐',title:'9 Languages',desc:'Multi-language dialogue',color:C.green},
+    {icon:'🎨',title:'Style Anchoring',desc:'Photorealistic to illustration',color:C.gold},
+  ];
+
+  /* Show: 0-5s = horizontal spread of all 5 features */
+  const spreadPhase=Math.min(1,Math.max(0,e-0.3)/4.7);
+
+  /* Column positions based on count */
+  const cardW=280; const gap=20;
+
+  return React.createElement('div',{style:{position:'absolute',inset:0,display:'flex',alignItems:'center',justifyContent:'center',padding:'60px 50px'}},
+    /* Background text */
+    React.createElement('div',{style:{position:'absolute',top:80,left:'50%',transform:'translateX(-50%)',textAlign:'center'}},
+      React.createElement('h2',{style:{fontFamily:'Newsreader, serif',fontSize:28,color:C.text,opacity:interp(e,[0,0.5],[0,1],Ex.expoOut)}},
+        React.createElement('span',{style:{color:C.gold}},'Built '),
+        'for Quality'
+      ),
+      React.createElement('p',{style:{fontFamily:'JetBrains Mono, monospace',fontSize:12,color:C.textSec,marginTop:4,opacity:interp(e,[0.3,0.6],[0,1],Ex.expoOut)}},'/wizard pro — unlock the full potential'),
+    ),
+    /* Feature cards */
+    React.createElement('div',{style:{display:'flex',gap,justifyContent:'center',flexWrap:'nowrap',marginTop:60}},features.map((f,i)=>{
+      const cardDelay=0.15+i*0.12;
+      const cardT=Math.max(0,(spreadPhase-cardDelay)/0.4);
+      const cardOp=interp(cardT,[0,0.2],[0,1],Ex.expoOut);
+      const cardY=interp(cardT,[0,0.25],[40,0],Ex.expoOut);
+      const cardS=interp(cardT,[0,0.3],[0.85,1],Ex.overshoot);
+      return React.createElement('div',{key:i,style:{width:cardW,flexShrink:0,opacity:Math.min(1,cardOp),transform:`translateY(${cardY}px) scale(${cardS})`,transition:'none'}},
+        React.createElement('div',{style:{background:C.surface,border:`1px solid ${C.border}`,borderRadius:16,padding:'28px 22px',textAlign:'center',position:'relative',overflow:'hidden',boxShadow:'0 8px 32px rgba(0,0,0,0.3)'}},
+          /* Accent top line */
+          React.createElement('div',{style:{position:'absolute',top:0,left:0,right:0,height:3,background:f.color}}),
+          React.createElement('div',{style:{fontSize:36,marginBottom:12}},''),
+          React.createElement('div',{style:{fontFamily:'Newsreader, serif',fontSize:18,fontWeight:600,color:C.text,marginBottom:6,opacity:interp(cardT,[0.1,0.3],[0,1],Ex.expoOut)}},f.title),
+          React.createElement('div',{style:{fontSize:11,color:C.textSec,lineHeight:1.4,fontFamily:'-apple-system, sans-serif',opacity:interp(cardT,[0.2,0.4],[0,1],Ex.expoOut)}},f.desc),
+          /* Subtle stat */
+          i===0?React.createElement('div',{style:{marginTop:10,fontFamily:'JetBrains Mono, monospace',fontSize:20,color:C.gold,opacity:interp(cardT,[0.3,0.5],[0,1],Ex.expoOut)}},'175+'):
+          i===1?React.createElement('div',{style:{marginTop:10,fontSize:10,color:C.purple,fontFamily:'JetBrains Mono, monospace',opacity:interp(cardT,[0.3,0.5],[0,1],Ex.expoOut)}},'category · style · mood · lighting · composition · detail'):
+          i===3?React.createElement('div',{style:{marginTop:10,fontSize:10,color:C.green,fontFamily:'JetBrains Mono, monospace',opacity:interp(cardT,[0.3,0.5],[0,1],Ex.expoOut)}},'EN / ZH / JP / KR / ES / FR / DE / RU / PT'):
+          null
+        )
+      );
+    }))
+  );
+}
+
+/* ━━━ Scene 4: Outro (17-20s) ━━━ */
+function SceneOutro(){
+  const{t}=useSprite();
+  const t1=interp(t,[0,0.3],[0,1],Ex.expoOut);
+  const t2=interp(t,[0.2,0.5],[0,1],Ex.expoOut);
+  const t3=interp(t,[0.4,0.7],[0,1],Ex.expoOut);
+  const t4=interp(t,[0.6,1],[0,1],Ex.expoOut);
+  const bgR=interp(t,[0,0.4],[0.5,1],Ex.expoOut);
+
+  return React.createElement('div',{style:{position:'absolute',inset:0,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center'}},
+    /* Expanding circle background effect */
+    React.createElement('div',{style:{position:'absolute',width:600,height:600,borderRadius:'50%',background:`radial-gradient(circle, ${C.gold}08 0%, transparent 70%)`,opacity:t1,transform:`scale(${1+0.5*(1-t1)})`}}),
+    /* Wizard hat */
+    React.createElement('div',{style:{opacity:t1,marginBottom:12,animation:'float 3s ease-in-out infinite'}},
+      React.createElement('svg',{width:80,height:80,viewBox:'0 0 120 120',fill:'none'},
+        React.createElement('ellipse',{cx:60,cy:95,rx:38,ry:7,stroke:C.gold,strokeWidth:2}),
+        React.createElement('path',{d:'M60 18L28 88L92 88L60 18Z',stroke:C.gold,strokeWidth:2,fill:'none'}),
+        React.createElement('path',{d:'M60 18C65 35 80 40 60 62C40 40 55 35 60 18Z',fill:C.gold,fillOpacity:0.15}),
+        React.createElement('circle',{cx:60,cy:18,r:3,fill:C.gold}),
+      )
+    ),
+    /* Title */
+    React.createElement('h2',{style:{fontFamily:'Newsreader, Georgia, serif',fontSize:42,fontWeight:600,color:C.text,opacity:t1,letterSpacing:'0.04em'}},
+      'Prompt',React.createElement('span',{style:{color:C.gold}},' Wizard'),
+    ),
+    React.createElement('p',{style:{fontFamily:'Newsreader, serif',fontSize:16,fontStyle:'italic',color:C.textSec,opacity:t2,marginTop:4}},'Elevate Your ChatGPT Image 2 Prompts'),
+    /* Install command */
+    React.createElement('div',{style:{marginTop:24,fontFamily:'JetBrains Mono, monospace',fontSize:12,opacity:t3,background:C.surface,border:`1px solid ${C.border}`,borderRadius:10,padding:'12px 20px',display:'flex',alignItems:'center',gap:10}},
+      React.createElement('span',{style:{color:C.termGreen}},'$'),
+      React.createElement('span',{style:{color:C.text}},'/wizard'),
+      React.createElement('span',{style:{color:C.textSec}},' — try it now'),
+    ),
+    /* GitHub link */
+    React.createElement('div',{style:{marginTop:20,opacity:t4,fontFamily:'-apple-system, sans-serif',fontSize:12,color:C.textSec,display:'flex',alignItems:'center',gap:6}},
+      React.createElement('span',{style:{fontSize:16}},''),
+      'github.com/EricArcha/prompt-wizard',
+    ),
+    /* Huashu-Design watermark (outside canvas in production) */
+    React.createElement('div',{style:{position:'absolute',bottom:28,right:36,fontSize:10,fontFamily:'monospace',color:'rgba(255,255,255,0.2)',letterSpacing:'0.15em',pointerEvents:'none',opacity:t4}},'Created by Huashu-Design'),
+  );
+}
+
+/* ━━━ App ━━━ */
+function App(){
+  return React.createElement(Stage,{duration:D,width:W,height:H,bgColor:C.bg},
+    React.createElement(Sprite,{start:0,end:3.2,key:'s1'},React.createElement(SceneIntro,{key:'i'})),
+    React.createElement(Sprite,{start:3,end:9,key:'s2'},React.createElement(SceneWorkflow,{key:'w'})),
+    React.createElement(Sprite,{start:9,end:17,key:'s3'},React.createElement(SceneFeatures,{key:'f'})),
+    React.createElement(Sprite,{start:17,end:D,key:'s4'},React.createElement(SceneOutro,{key:'o'})),
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(React.createElement(App));
+</script>
+</body>
+</html>

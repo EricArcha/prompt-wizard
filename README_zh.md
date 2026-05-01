@@ -8,6 +8,18 @@
 [![English](https://img.shields.io/badge/English-View-111111)](README.md)
 [![中文](https://img.shields.io/badge/中文-默认-ef476f)](README_zh.md)
 
+## 演示视频
+
+> Prompt Wizard 工作流与功能展示（20 秒）。
+
+<video src="demo/demo-animation-bgm.mp4" controls width="100%" poster="demo/demo-animation-poster.jpg">
+  您的浏览器不支持视频播放 — <a href="demo/demo-animation-bgm.mp4">下载 MP4</a>
+</video>
+
+也可查看[功能落地页](demo/landing.html)了解完整功能概览。
+
+---
+
 ## 快速上手
 
 ```
@@ -94,6 +106,10 @@ cd ~/.claude/skills/prompt-wizard && git pull
 prompt-wizard/
 ├── SKILL.md                      # 核心 skill 逻辑
 ├── README.md / README_zh.md      # 文档
+├── demo/                         # 演示动画 + 落地页
+│   ├── demo-animation-bgm.mp4    # 产品演示视频（含音频）
+│   ├── demo-animation.html       # 动画源码
+│   └── landing.html              # 功能落地页
 ├── references/
 │   ├── prompt-structure.md       # 六维度参考指南
 │   └── category-guides.md        # 各类别写作要点
@@ -121,4 +137,15 @@ prompt-wizard/
 
 ## 许可证
 
-MIT
+个人及教育用途免费。商业使用需获得授权。
+详见 [LICENSE](LICENSE)。
+
+> **注意：** `data/awesome-gpt-image-2-prompts/` 遵循 CC BY 4.0 协议（详见 [LICENSE](LICENSE#L26-L28)）。
+
+---
+
+<p align="center">
+  <a href="https://github.com/EricArcha/prompt-wizard">Prompt Wizard</a> ·
+  开发者 <a href="https://github.com/EricArcha">EricArcha</a><br>
+  <sub>可在 Claude Code 和 OpenClaw 上使用</sub>
+</p>

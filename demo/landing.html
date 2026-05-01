@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Prompt Wizard · ChatGPT Image 2 Prompt Generator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,500;0,6..72,600;0,6..72,700;1,6..72,400&display=swap" rel="stylesheet">
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; font-size: 16px; }
+  body {
+    background: #0A0C10; color: #F1F0ED;
+    font-family: -apple-system, 'Inter', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ━━━ Scrollbar ━━━ */
+  ::-webkit-scrollbar { width: 6px; }
+  ::-webkit-scrollbar-track { background: #0A0C10; }
+  ::-webkit-scrollbar-thumb { background: #1E2230; border-radius: 3px; }
+
+  /* ━━━ Animation ━━━ */
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes shimmer { 0%, 100% { opacity: 0.3; } 50% { opacity: 0.8; } }
+  @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+  @keyframes pulse { 0%, 100% { box-shadow: 0 0 20px rgba(245,158,11,0.2); } 50% { box-shadow: 0 0 40px rgba(245,158,11,0.4); } }
+  @keyframes starFloat { 0% { transform: translateY(0) scale(1); opacity: 0; } 10% { opacity: 1; } 90% { opacity: 1; } 100% { transform: translateY(-800px) scale(0); opacity: 0; } }
+
+  .animate-in { animation: fadeUp 0.8s cubic-bezier(0.16,1,0.3,1) both; }
+  .delay-1 { animation-delay: 0.1s; }
+  .delay-2 { animation-delay: 0.2s; }
+  .delay-3 { animation-delay: 0.3s; }
+  .delay-4 { animation-delay: 0.4s; }
+  .delay-5 { animation-delay: 0.5s; }
+
+  /* ━━━ Layout ━━━ */
+  .container { max-width: 1100px; margin: 0 auto; padding: 0 24px; }
+
+  /* ━━━ Hero ━━━ */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    padding: 40px 20px;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: 50%; left: 50%;
+    width: 800px; height: 800px;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(245,158,11,0.06) 0%, transparent 60%);
+    pointer-events: none;
+  }
+
+  /* Stars container */
+  .stars { position: absolute; inset: 0; overflow: hidden; pointer-events: none; }
+  .star {
+    position: absolute;
+    width: 2px; height: 2px;
+    background: #F59E0B;
+    border-radius: 50%;
+    animation: starFloat 4s ease-in-out infinite;
+  }
+  .star:nth-child(1) { left: 15%; top: 80%; animation-delay: 0s; animation-duration: 5s; }
+  .star:nth-child(2) { left: 35%; top: 90%; animation-delay: 0.5s; animation-duration: 4s; width: 3px; height: 3px; }
+  .star:nth-child(3) { left: 55%; top: 75%; animation-delay: 1s; animation-duration: 6s; }
+  .star:nth-child(4) { left: 75%; top: 85%; animation-delay: 1.5s; animation-duration: 4.5s; }
+  .star:nth-child(5) { left: 90%; top: 70%; animation-delay: 2s; animation-duration: 5.5s; width: 3px; height: 3px; }
+  .star:nth-child(6) { left: 25%; top: 85%; animation-delay: 0.8s; animation-duration: 3.5s; }
+  .star:nth-child(7) { left: 65%; top: 95%; animation-delay: 1.2s; animation-duration: 4.8s; }
+  .star:nth-child(8) { left: 45%; top: 80%; animation-delay: 1.8s; animation-duration: 5.2s; }
+  .star:nth-child(9) { left: 10%; top: 90%; animation-delay: 0.3s; animation-duration: 6.5s; }
+  .star:nth-child(10) { left: 80%; top: 95%; animation-delay: 2.5s; animation-duration: 4.2s; }
+
+  .hero-hat { margin-bottom: 20px; animation: float 3s ease-in-out infinite; }
+  .hero h1 {
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    line-height: 1.15;
+    margin-bottom: 8px;
+  }
+  .hero h1 .gold { color: #F59E0B; }
+  .hero .subtitle {
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: clamp(1rem, 2vw, 1.35rem);
+    color: #8B8986;
+    font-style: italic;
+    margin-bottom: 32px;
+  }
+  .hero .tags {
+    display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;
+    margin-bottom: 36px;
+  }
+  .hero .tags span {
+    padding: 6px 20px; border: 1px solid #F59E0B; border-radius: 20px;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; color: #F59E0B;
+  }
+  .hero .cta-group { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 12px 28px; border-radius: 10px;
+    font-family: 'JetBrains Mono', monospace; font-size: 0.9rem; font-weight: 500;
+    text-decoration: none; transition: all 0.3s cubic-bezier(0.16,1,0.3,1);
+    cursor: pointer;
+  }
+  .btn-primary {
+    background: #F59E0B; color: #0A0C10; border: none;
+    animation: pulse 3s ease-in-out infinite;
+  }
+  .btn-primary:hover { background: #D48A0A; transform: translateY(-2px); }
+  .btn-secondary {
+    background: transparent; color: #F1F0ED; border: 1px solid #1E2230;
+  }
+  .btn-secondary:hover { border-color: #F59E0B; color: #F59E0B; transform: translateY(-2px); }
+  .hero .github-link {
+    margin-top: 48px; font-size: 0.85rem; color: #52504D;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .hero .github-link a { color: #8B8986; text-decoration: none; }
+  .hero .github-link a:hover { color: #F59E0B; }
+
+  /* ━━━ Section ━━━ */
+  section { padding: 80px 0; position: relative; }
+  .section-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.75rem; color: #F59E0B;
+    text-transform: uppercase; letter-spacing: 0.15em;
+    margin-bottom: 8px;
+  }
+  .section-title {
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+    font-weight: 600; margin-bottom: 12px;
+  }
+  .section-desc {
+    color: #8B8986; max-width: 600px;
+    font-size: 1rem; margin-bottom: 48px;
+  }
+
+  /* ━━━ Features ━━━ */
+  .features { border-top: 1px solid #1E2230; border-bottom: 1px solid #1E2230; }
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  .feature-card {
+    background: #13161C;
+    border: 1px solid #1E2230;
+    border-radius: 16px;
+    padding: 32px 28px;
+    transition: all 0.4s cubic-bezier(0.16,1,0.3,1);
+    position: relative;
+    overflow: hidden;
+  }
+  .feature-card::before {
+    content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+    background: currentColor; opacity: 0;
+    transition: opacity 0.3s;
+  }
+  .feature-card:hover::before { opacity: 1; }
+  .feature-card:hover { transform: translateY(-4px); border-color: rgba(245,158,11,0.3); }
+  .feature-card .icon { font-size: 2rem; margin-bottom: 14px; }
+  .feature-card h3 {
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: 1.2rem; font-weight: 600; margin-bottom: 6px;
+  }
+  .feature-card p { color: #8B8986; font-size: 0.9rem; line-height: 1.5; }
+  .feature-card .stat {
+    margin-top: 12px; font-family: 'JetBrains Mono', monospace; font-size: 0.75rem;
+  }
+
+  /* ━━━ Code Demo ━━━ */
+  .demo-code {
+    background: #13161C;
+    border: 1px solid #1E2230;
+    border-radius: 14px;
+    overflow: hidden;
+    margin: 24px auto 0;
+    max-width: 780px;
+  }
+  .demo-code .header {
+    display: flex; align-items: center; gap: 8px;
+    padding: 12px 18px;
+    background: rgba(255,255,255,0.03);
+    border-bottom: 1px solid #1E2230;
+  }
+  .demo-code .dot { width: 10px; height: 10px; border-radius: 50%; }
+  .demo-code .title { font-family: 'JetBrains Mono', monospace; font-size: 0.7rem; color: #52504D; margin-left: 6px; }
+  .demo-code pre {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.82rem; line-height: 1.6;
+    padding: 20px 22px;
+    overflow-x: auto;
+    color: #8B8986;
+  }
+  .demo-code .kw { color: #8B5CF6; }
+  .demo-code .str { color: #F59E0B; }
+  .demo-code .cm { color: #52504D; font-style: italic; }
+  .demo-code .ok { color: #10B981; }
+  .demo-code .prompt-sym { color: #4ADE80; }
+
+  /* ━━━ Steps ━━━ */
+  .steps { background: rgba(245,158,11,0.02); }
+  .steps-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 24px; }
+  .step-card {
+    background: #13161C;
+    border: 1px solid #1E2230;
+    border-radius: 14px;
+    padding: 28px 24px;
+    position: relative;
+  }
+  .step-number {
+    font-family: 'Newsreader', Georgia, serif;
+    font-size: 2.5rem; font-weight: 300; color: #F59E0B;
+    opacity: 0.3; line-height: 1;
+    margin-bottom: 8px;
+  }
+  .step-card h3 { font-size: 1rem; font-weight: 600; margin-bottom: 6px; }
+  .step-card p { color: #8B8986; font-size: 0.85rem; line-height: 1.5; }
+
+  /* ━━━ Info row (example images) ━━━ */
+  .info-row {
+    display: flex; gap: 16px; flex-wrap: wrap;
+    margin-top: 32px; justify-content: center;
+  }
+  .info-card {
+    background: #13161C;
+    border: 1px solid #1E2230;
+    border-radius: 12px;
+    overflow: hidden;
+    width: 220px;
+    transition: transform 0.3s;
+  }
+  .info-card:hover { transform: translateY(-3px); }
+  .info-card img { width: 100%; height: 160px; object-fit: cover; display: block; background: #1E2230; }
+  .info-card .label { padding: 8px 12px; font-size: 0.75rem; color: #8B8986; font-family: 'JetBrains Mono', monospace; }
+
+  /* ━━━ CTA Footer ━━━ */
+  .cta-section {
+    text-align: center;
+    padding: 80px 20px;
+    border-top: 1px solid #1E2230;
+  }
+
+  /* ━━━ Responsive ━━━ */
+  @media (max-width: 640px) {
+    section { padding: 48px 0; }
+    .features-grid { grid-template-columns: 1fr; }
+    .steps-grid { grid-template-columns: 1fr; }
+    .steps-grid .step-card:nth-child(n+4) { display: none; }
+    .info-row { flex-direction: column; align-items: center; }
+    .info-card { width: 100%; max-width: 300px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ━━━ Hero ━━━ -->
+<section class="hero">
+  <div class="stars">
+    <div class="star"></div><div class="star"></div><div class="star"></div>
+    <div class="star"></div><div class="star"></div><div class="star"></div>
+    <div class="star"></div><div class="star"></div><div class="star"></div><div class="star"></div>
+  </div>
+
+  <div class="hero-hat animate-in">
+    <svg width="80" height="80" viewBox="0 0 120 120" fill="none">
+      <ellipse cx="60" cy="95" rx="38" ry="7" stroke="#F59E0B" stroke-width="2.5"/>
+      <path d="M60 18L28 88L92 88L60 18Z" stroke="#F59E0B" stroke-width="2.5" fill="none"/>
+      <path d="M60 18C65 35 80 40 60 62C40 40 55 35 60 18Z" fill="#F59E0B" fill-opacity="0.2"/>
+      <circle cx="60" cy="18" r="4" fill="#F59E0B"/>
+    </svg>
+  </div>
+
+  <h1 class="animate-in">Prompt <span class="gold">Wizard</span></h1>
+  <p class="subtitle animate-in delay-1">ChatGPT Image 2 · 专业提示词生成器</p>
+
+  <div class="tags animate-in delay-2">
+    <span>智能交互</span>
+    <span>风格锚定</span>
+    <span>高质量输出</span>
+    <span>Claude Code</span>
+  </div>
+
+  <div class="cta-group animate-in delay-3">
+    <a href="https://github.com/EricArcha/prompt-wizard" class="btn btn-primary" target="_blank">GitHub · 安装</a>
+    <a href="#features" class="btn btn-secondary">了解功能</a>
+  </div>
+
+  <div class="github-link animate-in delay-4">
+    <span>github.com/EricArcha/prompt-wizard</span>
+  </div>
+</section>
+
+<!-- ━━━ Features ━━━ -->
+<section id="features" class="features">
+  <div class="container">
+    <p class="section-label animate-in">Features</p>
+    <h2 class="section-title animate-in delay-1">Built for Quality</h2>
+    <p class="section-desc animate-in delay-2">从风格锚定到框架化输出，Prompt Wizard 让每次交互都产出专业级提示词。</p>
+
+    <div class="features-grid">
+      <div class="feature-card animate-in delay-1" style="color:#F59E0B">
+        <div class="icon"></div>
+        <h3>175+ 社区案例</h3>
+        <p>涵盖肖像、海报、UI、角色设计、电商等 13+ 类别，每个案例经真实用户验证。</p>
+        <div class="stat" style="color:#F59E0B">175+ cases · 13 categories</div>
+      </div>
+      <div class="feature-card animate-in delay-2" style="color:#8B5CF6">
+        <div class="icon"></div>
+        <h3>6 维度框架</h3>
+        <p>category · style · mood · lighting · composition · detail — 结构化 prompt 工程，再复杂的想法也能清晰表达。</p>
+        <div class="stat" style="color:#8B5CF6">6 dimensions · structured</div>
+      </div>
+      <div class="feature-card animate-in delay-3" style="color:#60A5FA">
+        <div class="icon"></div>
+        <h3>Pro 模式</h3>
+        <p>7 步引导式工作流：从概念分析到风格建议到最终输出，专业用户也能提速。</p>
+        <div class="stat" style="color:#60A5FA">7-step guided workflow</div>
+      </div>
+      <div class="feature-card animate-in delay-2" style="color:#10B981">
+        <div class="icon"></div>
+        <h3>9 种语言</h3>
+        <p>EN / ZH / JP / KR / ES / FR / DE / RU / PT — 用母语探索 AI 提示词创作。</p>
+        <div class="stat" style="color:#10B981">9 languages supported</div>
+      </div>
+      <div class="feature-card animate-in delay-3" style="color:#F59E0B">
+        <div class="icon"></div>
+        <h3>风格锚定</h3>
+        <p>从写实摄影到数字插画、从电影级到产品展示 — 用案例的精准 prompt 锚定风格，告别模糊描述。</p>
+        <div class="stat" style="color:#F59E0B">style anchoring · precision</div>
+      </div>
+      <div class="feature-card animate-in delay-4" style="color:#8B5CF6">
+        <div class="icon"></div>
+        <h3>默认模式足够好用</h3>
+        <p>简单一句 "/wizard 我想要..." 即可。无需学习 7 步流程，默认模式已足够智能。<p>
+        <div class="stat" style="color:#8B5CF6">simple · intelligent · default</div>
+      </div>
+    </div>
+
+    <!-- Case image quick examples -->
+    <div class="info-row animate-in delay-4">
+      <div class="info-card">
+        <img src="../data/awesome-gpt-image-2-prompts/images/portrait_case1/output.jpg" alt="Street Neon Portrait case" loading="lazy">
+        <div class="label">Street Neon Portrait</div>
+      </div>
+      <div class="info-card">
+        <img src="../data/awesome-gpt-image-2-prompts/images/portrait_case28/output.jpg" alt="Japanese Onsen case" loading="lazy">
+        <div class="label">Japanese Onsen Portrait</div>
+      </div>
+      <div class="info-card">
+        <img src="../data/awesome-gpt-image-2-prompts/images/portrait_case27/output.jpg" alt="35mm Flash case" loading="lazy">
+        <div class="label">35mm Flash Editorial</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ━━━ How It Works ━━━ -->
+<section class="steps">
+  <div class="container">
+    <p class="section-label animate-in">How It Works</p>
+    <h2 class="section-title animate-in delay-1">一秒上手</h2>
+    <p class="section-desc animate-in delay-2">无论是快速模式还是 7 步 Pro 模式，Prompt Wizard 都能产出高质量的 ChatGPT Image 2 提示词。</p>
+
+    <div class="steps-grid">
+      <div class="step-card animate-in delay-1">
+        <div class="step-number">01</div>
+        <h3>输入你的想法</h3>
+        <p>"/wizard" 后跟上你的创意描述即可。也可以直接 "/wizard pro" 启动 7 步流程。</p>
+      </div>
+      <div class="step-card animate-in delay-2">
+        <div class="step-number">02</div>
+        <h3>智能框架化</h3>
+        <p>AI 自动将你的想法映射到 6 维度框架，补充缺失的关键元素。</p>
+      </div>
+      <div class="step-card animate-in delay-3">
+        <div class="step-number">03</div>
+        <h3>风格锚定</h3>
+        <p>从 175+ 社区验证案例中匹配最合适的风格，确保输出不走样。</p>
+      </div>
+      <div class="step-card animate-in delay-4">
+        <div class="step-number">04</div>
+        <h3>直接使用</h3>
+        <p>得到英文专业提示词，直接粘贴到 ChatGPT Image 2 即可使用。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ━━━ Code Example ━━━ -->
+<section>
+  <div class="container">
+    <p class="section-label animate-in">Quick Start</p>
+    <h2 class="section-title animate-in delay-1">在 Claude Code 中使用</h2>
+    <p class="section-desc animate-in delay-2">安装即用，两种模式覆盖所有使用场景。</p>
+
+    <div class="demo-code animate-in delay-3">
+      <div class="header">
+        <div class="dot" style="background:#FF5F56"></div>
+        <div class="dot" style="background:#FFBD2E"></div>
+        <div class="dot" style="background:#27C93F"></div>
+        <span class="title">prompt-wizard · terminal</span>
+      </div>
+      <pre><span class="prompt-sym"># Default mode — quick and smart</span>
+$ <span class="prompt-sym">/wizard</span> a cinematic portrait of a samurai in a neon-lit Tokyo alley at midnight
+
+<span class="prompt-sym">> Analyzing your concept...</span>
+<span class="prompt-sym">> Category:</span> <span class="str">Portrait / Cinematic</span>
+<span class="prompt-sym">> Style:</span> <span class="str">Film noir meets cyberpunk</span>
+<span class="prompt-sym">> Mood:</span> <span class="str">Dramatic, mysterious</span>
+<span class="prompt-sym">> Lighting:</span> <span class="str">Mixed — cold blue neon + warm amber backlight</span>
+
+<span class="kw">Cinematic portrait</span> of a samurai warrior standing in a narrow Tokyo alleyway at midnight, dramatic low-angle medium shot, intense eye contact under a katana blade's reflection, harsh neon pink and cyan light from overhead signs mixing with warm amber glow from a distant izakaya, heavy rain creating reflections on wet asphalt, authentic film grain, anamorphic lens flare, subtle mist, ultra-detailed samurai armor textures with raindrops on metal, cinematic color grading with deep shadows and compressed highlights, sharp on the eyes with atmospheric softness on the edges, epic and intimate simultaneously
+
+<span class="ok">✓ Prompt ready for ChatGPT Image 2</span></pre>
+    </div>
+
+    <div style="text-align:center;margin-top:36px">
+      <a href="https://github.com/EricArcha/prompt-wizard" class="btn btn-primary" target="_blank">安装 Prompt Wizard</a>
+    </div>
+  </div>
+</section>
+
+<!-- ━━━ CTA ━━━ -->
+<section class="cta-section">
+  <div class="container">
+    <h2 class="section-title animate-in">开始你的 Wizard 之旅</h2>
+    <p class="section-desc animate-in delay-1" style="margin:10px auto 28px;text-align:center">在 Claude Code 中体验专业级 ChatGPT Image 2 提示词生成。</p>
+    <div class="cta-group animate-in delay-2">
+      <a href="https://github.com/EricArcha/prompt-wizard" class="btn btn-primary" target="_blank">⭐ GitHub Star</a>
+      <a href="https://github.com/EricArcha/prompt-wizard/issues" class="btn btn-secondary" target="_blank">反馈建议</a>
+    </div>
+    <p style="margin-top:48px;font-size:0.75rem;color:#52504D">Open source · MIT License</p>
+  </div>
+</section>
+
+</body>
+</html>

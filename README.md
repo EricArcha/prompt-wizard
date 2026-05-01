@@ -8,6 +8,18 @@
 [![English](https://img.shields.io/badge/English-Default-111111)](README.md)
 [![中文](https://img.shields.io/badge/中文-查看-ef476f)](README_zh.md)
 
+## Demo
+
+> Animated showcase of Prompt Wizard's workflow and features (20s).
+
+<video src="demo/demo-animation-bgm.mp4" controls width="100%" poster="demo/demo-animation-poster.jpg">
+  Your browser doesn't support video — <a href="demo/demo-animation-bgm.mp4">download MP4</a>
+</video>
+
+Also check the [Landing Page](demo/landing.html) for a full feature overview.
+
+---
+
 ## Quick Start
 
 ```
@@ -94,6 +106,10 @@ Prompt Wizard is built on analysis of 175+ community-verified GPT-Image-2 prompt
 prompt-wizard/
 ├── SKILL.md                      # Core skill logic
 ├── README.md / README_zh.md      # Docs
+├── demo/                         # Demo animation + landing page
+│   ├── demo-animation-bgm.mp4    # Product demo video (with audio)
+│   ├── demo-animation.html       # Source HTML animation
+│   └── landing.html              # Feature landing page
 ├── references/
 │   ├── prompt-structure.md       # 6-dimension reference
 │   └── category-guides.md        # Category-specific tips
@@ -121,4 +137,15 @@ prompt-wizard/
 
 ## License
 
-MIT
+Personal & educational use is free. Commercial use requires authorization.
+See [LICENSE](LICENSE) for full terms.
+
+> **Note:** `data/awesome-gpt-image-2-prompts/` is CC BY 4.0 (see [LICENSE](LICENSE#L26-L28)).
+
+---
+
+<p align="center">
+  <a href="https://github.com/EricArcha/prompt-wizard">Prompt Wizard</a> ·
+  Built by <a href="https://github.com/EricArcha">EricArcha</a><br>
+  <sub>Available on Claude Code &amp; OpenClaw</sub>
+</p>

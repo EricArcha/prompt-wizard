@@ -1,0 +1,36 @@
+Prompt Wizard License
+Copyright © 2026 EricArcha
+
+## Terms
+
+### 1. Personal & Educational Use (Free)
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to use,
+copy, modify, and distribute the Software for personal, educational, and
+non-commercial purposes, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+### 2. Commercial Use
+Any use of the Software for commercial purposes — including but not limited
+to integration into commercial products, paid services, internal business
+tools used by for-profit organizations, or consulting engagements — requires
+prior written authorization from the copyright holder.
+
+Contact: [EricArcha](https://github.com/EricArcha) via GitHub Issues
+
+### 3. Case Library Exception
+The directory `data/awesome-gpt-image-2-prompts/` and its contents are
+licensed under the Creative Commons Attribution 4.0 International License
+(CC BY 4.0). To view a copy of this license, visit
+https://creativecommons.org/licenses/by/4.0/
+
+### Disclaimer
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
