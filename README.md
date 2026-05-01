@@ -5,6 +5,7 @@
 [![ChatGPT Image 2](https://img.shields.io/badge/ChatGPT-Image_2-10a37f?logo=openai&logoColor=white)](https://openai.com/chatgpt)
 [![Claude Code](https://img.shields.io/badge/Claude-Code-d97706?logo=anthropic&logoColor=white)](https://claude.ai)
 [![OpenClaw](https://img.shields.io/badge/OpenClaw-Compatible-7c3aed)](https://openclaw.ai)
+[![ClawHub](https://img.shields.io/badge/ClawHub-Published-7c3aed)](https://clawhub.ai/skills/prompt-wizard)
 [![English](https://img.shields.io/badge/English-Default-111111)](README.md)
 [![中文](https://img.shields.io/badge/中文-查看-ef476f)](README_zh.md)
 
@@ -24,14 +25,15 @@ Also check the [Landing Page](https://htmlpreview.github.io/?https://github.com/
 /wizard a cyberpunk cat sitting on a neon-lit balcony overlooking a rainy Tokyo street
 ```
 
-Prompt Wizard asks 2-4 clarifying questions (market, style preferences, key details), then outputs a polished GPT-Image-2 prompt in **English** — the optimal language for image generation quality.
+Prompt Wizard asks 2-5 clarifying questions (text/copy, market, style preferences, key details), then outputs a polished GPT-Image-2 prompt in **English** — the optimal language for image generation quality.
 
 ## Commands
 
 | Command | Description | Example |
 |---------|-------------|---------|
 | `/wizard [idea]` | Conversational generation with style anchoring | `/wizard luxury watch ad` |
-| `/wizard pro` | Structured 7-step guided mode (`/back` to revise, `/skip` to accept default) | `/wizard pro` |
+| `/wizard pro` | Structured 8-step guided mode (`/back` to revise, `/skip` to accept default) | `/wizard pro` |
+| `/wizard multi [idea]` | Generate multiple prompts in one session (batch, variations, series) | `/wizard multi 3 variations of a luxury watch ad` |
 | `/wizard examples` | Showcase curated highlight cases with local image previews | `/wizard examples` |
 | `/wizard templates [cat]` | Browse 7 categories of community-verified templates | `/wizard templates portrait` |
 | `/wizard lang [code]` | Switch conversation language (prompts always English) | `/wizard lang ja` |
@@ -135,7 +137,7 @@ prompt-wizard/
 - [x] Style anchoring with case library
 - [x] Bundled case library with local images
 - [x] Bilingual documentation (EN/ZH)
-- [ ] ClawHub registry publication
+- [x] ClawHub registry publication
 - [x] Multi-image prompt support (sequences, grids, storyboards)
 - [ ] User prompt history / favorite collection
 
