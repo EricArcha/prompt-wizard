@@ -29,7 +29,7 @@ Commands:
   /wizard examples  Curated showcase of best prompt results
   /wizard templates Browse 7 categories, 175+ community templates
   /wizard lang      Switch conversation language (prompts stay English)
-  /wizard update    Fetch latest prompt library from upstream
+  /wizard update-library  Fetch latest prompt library from upstream
 
 Library version: {version from config.json}  |  Conversation: {language}
 Prompts always generated in English for best image quality.
@@ -105,9 +105,9 @@ Start creating: "/wizard {your idea}"
 
 Browse the case library. Without argument: list 7 categories. With category: search `data/awesome-gpt-image-2-prompts/cases/{category}.md`, show numbered case list (max 20 entries). User picks a number to see the full prompt text.
 
-### /wizard update
+### /wizard update-library
 
-Execute `{baseDir}/scripts/update-prompts.sh` and present output. Updates the embedded case library via fresh shallow clone from upstream.
+Execute `{baseDir}/scripts/update-prompts.sh` and present its output verbatim. The script handles everything — cloning, changelog, version update. Do NOT run additional git commands in the data directory. The data directory has no .git; git would walk up to the skill repo and show wrong history.
 
 ### /wizard lang [code]
 
@@ -183,7 +183,7 @@ The case library is at `data/awesome-gpt-image-2-prompts/`. Do NOT load entire f
 
 ## Config File
 
-`config.json` tracks version and language. Only write to update version (`/wizard update`) or language (`/wizard lang`).
+`config.json` tracks version and language. Only write to update version (`/wizard update-library`) or language (`/wizard lang`).
 
 ## Common Patterns
 

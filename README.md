@@ -25,7 +25,7 @@ Prompt Wizard asks 2-4 clarifying questions (market, style preferences, key deta
 | `/wizard examples` | Showcase curated highlight cases with local image previews | `/wizard examples` |
 | `/wizard templates [cat]` | Browse 7 categories of community-verified templates | `/wizard templates portrait` |
 | `/wizard lang [code]` | Switch conversation language (prompts always English) | `/wizard lang ja` |
-| `/wizard update` | Fetch latest prompt library from upstream | `/wizard update` |
+| `/wizard update-library` | Fetch latest prompt library from upstream | `/wizard update-library` |
 
 **Refine after generation:** `darker`, `brighter`, `more minimalist`, `closer crop`, `warmer tones`, etc.
 
@@ -64,8 +64,16 @@ npx clawhub@latest install prompt-wizard
 
 The case library is bundled with the skill. To fetch the latest community prompts:
 
+To update the **skill itself** (new features, bug fixes):
+
+```bash
+cd ~/.claude/skills/prompt-wizard && git pull
 ```
-/wizard update
+
+To update the **case library** (latest community prompts):
+
+```
+/wizard update-library
 ```
 
 This fetches the latest version of [awesome-gpt-image-2-prompts](https://github.com/EvoLinkAI/awesome-gpt-image-2-prompts) and updates the version in `config.json`.
