@@ -239,7 +239,7 @@ Before each case entry, check if the image file exists locally:
   🔗 {x.com link}
 
 - **{Case title}** — {relevance note}
-  🖼️ {local image path or "(`/wizard update-library` to view images)"}
+  🖼️ {same as above: check file existence, show local path or fallback}
   🔗 {x.com link}
 
 💡 On OpenClaw: use the image display feature to push case images to the chat window.
