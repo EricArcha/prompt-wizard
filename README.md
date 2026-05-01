@@ -74,6 +74,8 @@ npx clawhub@latest install prompt-wizard
 
 Lightweight version (~8MB, case text included, images downloadable on demand). After install, run `/wizard update-library` to fetch the full case library with 175+ reference images.
 
+> **Note:** The ClawHub package is licensed MIT-0 (platform requirement). The GitHub repository uses a custom license — see [LICENSE](LICENSE) for full terms.
+
 ### Update the prompt library
 
 The case library is bundled with the skill. To fetch the latest community prompts:

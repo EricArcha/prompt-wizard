@@ -74,6 +74,8 @@ npx clawhub@latest install prompt-wizard
 
 轻量版（~8MB，含案例文本，图片可按需下载）。安装后运行 `/wizard update-library` 获取完整案例库（含 175+ 参考图片）。
 
+> **注意：** ClawHub 包采用 MIT-0 协议（平台要求）。GitHub 仓库使用自定义 License，详见 [LICENSE](LICENSE)。
+
 ### 更新提示词库
 
 案例库已随 skill 内置。拉取社区最新 prompt：

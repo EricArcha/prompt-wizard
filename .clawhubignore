@@ -1,3 +1,18 @@
-# Exclude case library images (~82MB) to keep ClawHub package under 50MB
-# Case text files (cases/*.md) are retained — they're essential for case browsing
+# ClawHub publish excludes
+# Only bundle files the skill needs at runtime
+
+# Case library images (~82MB) — too large, downloadable via /wizard update-library
 data/awesome-gpt-image-2-prompts/images/
+
+# Upstream case library junk — not needed for skill execution
+data/awesome-gpt-image-2-prompts/README_*.md
+data/awesome-gpt-image-2-prompts/data/
+data/awesome-gpt-image-2-prompts/script/
+data/awesome-gpt-image-2-prompts/tmp/
+
+# Demo assets — landing page and animations not needed for skill runtime
+demo/
+
+# Documentation — READMEs are for GitHub, not needed for skill execution
+README.md
+README_zh.md
