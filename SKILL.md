@@ -173,7 +173,13 @@ Browse the case library. Without argument: list 7 categories. With category: sea
 
 ### /wizard update-library
 
-Execute `{baseDir}/scripts/update-prompts.sh` and present its output verbatim. The script handles everything — cloning, changelog, version update, and light→full install upgrade when images are missing. Do NOT run additional git commands in the data directory. The data directory has no .git; git would walk up to the skill repo and show wrong history.
+Execute `{baseDir}/scripts/update-prompts.sh` and present its output verbatim.
+
+**CRITICAL — You MUST run the script.** Do NOT read `config.json` and fabricate a status. Do NOT short-circuit by checking the version number. Only the script's stdout is authoritative. The script handles version comparison, changelog, and light→full install detection internally.
+
+**If you do not have permission to execute the script** (Bash tool denied): tell the user honestly — "I don't have permission to run the update script. Please run it manually: `cd ~/.claude/skills/prompt-wizard && ./scripts/update-prompts.sh`". Do NOT make up output or report a fake status.
+
+Do NOT run additional git commands in the data directory. The data directory has no .git; git would walk up to the skill repo and show wrong history.
 
 ### /wizard lang [code]
 
@@ -299,6 +305,8 @@ These are known failure modes. If you catch yourself doing any of these, STOP an
 | Citing cases from memory | "I remember this case" | Always grep/search the library; memory is unreliable |
 | Skipping case search in multi mode | "Multi mode doesn't require it" | Multi mode requires silent case search during Dimension Collect |
 | Using shortened format for confirmation | "This is just a preview, full format comes later" | Every prompt uses full Output Format (🖼️+🔍+📚+🔄) regardless of confirmation stage |
+| Short-circuiting update-library | "config.json shows current version, no need to run script" | MUST execute the script; only script stdout is authoritative |
+| Fabricating script output without permission | "I can't run the script, so I'll just check config.json" | Tell user honestly: "I don't have permission, please run manually: `./scripts/update-prompts.sh`" |
 
 ## Tone
 
