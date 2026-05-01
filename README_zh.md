@@ -59,6 +59,12 @@ git clone https://github.com/EricArcha/prompt-wizard.git ~/.claude/skills/prompt
 
 ### OpenClaw（完整安装）
 
+通过 ClawHub 安装（推荐）：
+```bash
+openclaw skills install prompt-wizard
+```
+
+或通过 git：
 ```bash
 git clone https://github.com/EricArcha/prompt-wizard.git ~/.openclaw/skills/prompt-wizard
 ```

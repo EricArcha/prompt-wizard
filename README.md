@@ -59,6 +59,12 @@ Includes 175+ case images (~90MB total) for visual reference.
 
 ### OpenClaw (full install)
 
+From ClawHub (recommended):
+```bash
+openclaw skills install prompt-wizard
+```
+
+Or via git:
 ```bash
 git clone https://github.com/EricArcha/prompt-wizard.git ~/.openclaw/skills/prompt-wizard
 ```
