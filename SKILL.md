@@ -26,10 +26,10 @@ When the user invokes `/wizard` (no arguments), display this help card:
 Commands:
   /wizard [idea]    Describe your vision, I'll fill the gaps
   /wizard pro       Step-by-step guided mode (7 steps)
-  /examples         Curated showcase of best prompt results
-  /templates        Browse 7 categories, 175+ community templates
-  /lang [code]      Switch conversation language (prompts stay English)
-  /update           Fetch latest prompt library from upstream
+  /wizard examples  Curated showcase of best prompt results
+  /wizard templates Browse 7 categories, 175+ community templates
+  /wizard lang      Switch conversation language (prompts stay English)
+  /wizard update    Fetch latest prompt library from upstream
 
 Library version: {version from config.json}  |  Conversation: {language}
 Prompts always generated in English for best image quality.
@@ -72,7 +72,7 @@ Structured mode. 7 steps, one at a time. Support `/back` and `/skip`.
 
 After all steps: generate English prompt + anatomy + case refs + refine offer.
 
-### /examples
+### /wizard examples
 
 Show 6 curated highlight cases with local image paths:
 
@@ -97,19 +97,19 @@ Show 6 curated highlight cases with local image paths:
 6. UI: Cyberpunk Neon Design System (Case 38)
    🖼️ data/awesome-gpt-image-2-prompts/images/ui_case38/output.jpg
 
-Pick a case to see its full prompt: "/templates {category}"
+Pick a case to see its full prompt: "/wizard templates {category}"
 Start creating: "/wizard {your idea}"
 ```
 
-### /templates [category]
+### /wizard templates [category]
 
 Browse the case library. Without argument: list 7 categories. With category: search `data/awesome-gpt-image-2-prompts/cases/{category}.md`, show numbered case list (max 20 entries). User picks a number to see the full prompt text.
 
-### /update
+### /wizard update
 
 Execute `{baseDir}/scripts/update-prompts.sh` and present output. Updates the embedded case library via fresh shallow clone from upstream.
 
-### /lang [code]
+### /wizard lang [code]
 
 Switch conversation language. Supported: zh, en, ja, ko, es, fr, de, ru, pt.
 No argument: show current setting ("Auto-detect" if language is "auto").
@@ -183,7 +183,7 @@ The case library is at `data/awesome-gpt-image-2-prompts/`. Do NOT load entire f
 
 ## Config File
 
-`config.json` tracks version and language. Only write to update version (`/update`) or language (`/lang`).
+`config.json` tracks version and language. Only write to update version (`/wizard update`) or language (`/wizard lang`).
 
 ## Common Patterns
 
