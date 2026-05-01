@@ -49,40 +49,30 @@ Supported conversation languages: `zh`, `en`, `ja`, `ko`, `es`, `fr`, `de`, `ru`
 
 ## Install
 
-### Claude Code (full install)
+### Claude Code
 
+**Git** (recommended — full install with 175+ case images, ~90MB):
 ```bash
 git clone https://github.com/EricArcha/prompt-wizard.git ~/.claude/skills/prompt-wizard
 ```
 
-Includes 175+ case images (~90MB total) for visual reference.
-
-### OpenClaw (full install)
-
-From ClawHub (recommended):
-```bash
-openclaw skills install prompt-wizard
-```
-
-Or via git:
-```bash
-git clone https://github.com/EricArcha/prompt-wizard.git ~/.openclaw/skills/prompt-wizard
-```
-
-Or symlink to share with Claude Code:
-```bash
-ln -s ~/.claude/skills/prompt-wizard ~/.openclaw/skills/prompt-wizard
-```
-
-### ClawHub (lightweight install)
-
+**npx clawhub** (lightweight, ~8MB):
 ```bash
 npx clawhub@latest install prompt-wizard
 ```
 
-Lightweight version (~8MB, case text included, images downloadable on demand). After install, run `/wizard update-library` to fetch the full case library with 175+ reference images.
+### OpenClaw
 
-> **Note:** The ClawHub package is licensed MIT-0 (platform requirement). The GitHub repository uses a custom license — see [LICENSE](LICENSE) for full terms.
+**openclaw skills install** (recommended — lightweight, ~8MB):
+```bash
+openclaw skills install prompt-wizard
+```
+After install, run `/wizard update-library` to download the full case library with 175+ reference images.
+
+**Git** (full install with 175+ case images, ~90MB):
+```bash
+git clone https://github.com/EricArcha/prompt-wizard.git ~/.openclaw/skills/prompt-wizard
+```
 
 ### Update the prompt library
 
@@ -153,6 +143,8 @@ Personal & educational use is free. Commercial use requires authorization.
 See [LICENSE](LICENSE) for full terms.
 
 > **Note:** `data/awesome-gpt-image-2-prompts/` is CC BY 4.0 (see [LICENSE](LICENSE#L26-L28)).
+>
+> Packages installed from ClawHub use the MIT-0 license (platform requirement). This repository uses a custom license.
 
 ---
 
