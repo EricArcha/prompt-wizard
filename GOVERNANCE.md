@@ -34,11 +34,14 @@ Before every `git push`, verify:
 - [ ] Commit message describes WHY, not just WHAT
 
 ### Push & Publish
-- [ ] git push origin main — verify success
-- [ ] clawhub sync --bump <patch|minor|major> --changelog "<summary>" --root .
-- [ ] **CRITICAL — Sync CHANGELOG.md immediately after clawhub sync**: Add the new version header at the top of CHANGELOG.md, add clawhub sync changelog as changelog bullet(s), verify CHANGELOG version header matches the version just published to ClawHub
-- [ ] **DO NOT mix with other commits**: Version alignment is separate from feature commits. If you sync to ClawHub as part of a larger commit, add CHANGELOG.md in the same commit before pushing.
-- [ ] Verify: clawhub inspect prompt-wizard + compare with CHANGELOG top header — they MUST match
+
+**IMPORTANT:** CHANGELOG is the source of truth for version numbers. Update CHANGELOG FIRST, then sync ClawHub. Never sync first and chase CHANGELOG afterward — that creates a version mismatch loop.
+
+- [ ] **Step 1 — Update CHANGELOG.md**: Add new version header and entries at top. This establishes the version number that ClawHub will use.
+- [ ] **Step 2 — Commit & Push**: Include CHANGELOG.md in the same commit as the changes. `git push origin main`.
+- [ ] **Step 3 — Sync ClawHub**: `clawhub sync --bump <patch|minor|major> --changelog "<summary>" --root .`. Because CHANGELOG already has the new version, bump should match it.
+- [ ] **Step 4 — Verify**: `clawhub inspect prompt-wizard` + `grep` CHANGELOG top header — they MUST match.
+- [ ] **Exception — CHANGELOG-only fix**: If the only change is a CHANGELOG typo/format correction (no runtime file changes), either: (a) sync without bump if CLawHub supports it, or (b) accept the bump as a patch and follow steps 1-4 above. Do NOT defer the sync — an outdated ClawHub CHANGELOG is technical debt.
 ```
 
 ## Version Bump Rules
