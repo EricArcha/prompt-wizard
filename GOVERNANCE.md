@@ -36,7 +36,9 @@ Before every `git push`, verify:
 ### Push & Publish
 - [ ] git push origin main — verify success
 - [ ] clawhub sync --bump <patch|minor|major> --changelog "<summary>" --root .
-- [ ] Verify: clawhub inspect prompt-wizard — check version matches
+- [ ] **CRITICAL — Sync CHANGELOG.md immediately after clawhub sync**: Add the new version header at the top of CHANGELOG.md, add clawhub sync changelog as changelog bullet(s), verify CHANGELOG version header matches the version just published to ClawHub
+- [ ] **DO NOT mix with other commits**: Version alignment is separate from feature commits. If you sync to ClawHub as part of a larger commit, add CHANGELOG.md in the same commit before pushing.
+- [ ] Verify: clawhub inspect prompt-wizard + compare with CHANGELOG top header — they MUST match
 ```
 
 ## Version Bump Rules
