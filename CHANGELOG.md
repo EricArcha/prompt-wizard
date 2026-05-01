@@ -24,3 +24,5 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - `setup.sh` removed — data is now bundled directly in the repository
 
 [1.0.0]: https://github.com/EricArcha/prompt-wizard/releases/tag/v1.0.0
+
+Repository: https://github.com/EricArcha/prompt-wizard
