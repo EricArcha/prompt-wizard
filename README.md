@@ -1,6 +1,6 @@
 # Prompt Wizard
 
-> AI-powered prompt generator for ChatGPT Image 2. Describe your vision, get a professional-grade prompt.
+> AI-powered prompt generator for ChatGPT Image 2. Describe your vision, get a professional-grade English prompt.
 
 [![English](https://img.shields.io/badge/English-Default-111111)](README.md)
 [![中文](https://img.shields.io/badge/中文-查看-ef476f)](README_zh.md)
@@ -11,41 +11,39 @@
 /wizard a cyberpunk cat sitting on a neon-lit balcony overlooking a rainy Tokyo street
 ```
 
-Prompt Wizard asks clarifying questions, then outputs a polished GPT-Image-2 prompt with technical annotations and case references.
+Prompt Wizard asks 2-4 clarifying questions (market, style preferences, key details), then outputs a polished GPT-Image-2 prompt in **English** — the optimal language for image generation quality.
 
 ## Commands
 
 | Command | Description | Example |
 |---------|-------------|---------|
-| `/wizard [idea]` | Conversational generation (default) | `/wizard cinematic poster of a space bakery` |
-| `/wizard pro` | Structured 6-step guided mode | `/wizard pro` |
-| `/templates` | Browse 7 categories of verified templates | `/templates portrait` |
-| `/lang [code]` | Switch output language | `/lang ja` |
-| `/update` | Pull latest prompt library | `/update` |
+| `/wizard [idea]` | Conversational generation with style anchoring | `/wizard luxury watch ad` |
+| `/wizard pro` | Structured 7-step guided mode (`/back` to revise, `/skip` to accept default) | `/wizard pro` |
+| `/examples` | Showcase curated highlight cases with local image previews | `/examples` |
+| `/templates [category]` | Browse 7 categories of community-verified templates | `/templates portrait` |
+| `/lang [code]` | Switch conversation language (prompts always English) | `/lang ja` |
+| `/update` | Fetch latest prompt library from upstream | `/update` |
 
-Supported languages: `zh`, `en`, `ja`, `ko`, `es`, `fr`, `de`, `ru`, `pt`
+**Refine after generation:** `darker`, `brighter`, `more minimalist`, `closer crop`, `warmer tones`, etc.
+
+**Style anchoring in `/wizard`:** The skill searches the case library for matching references and lets you anchor your prompt to a specific case's lighting, composition, or palette — before generation.
+
+**Market dimension:** Both modes ask about target market/audience (Chinese, Japanese, Korean, Western, global) to align the aesthetic direction.
+
+Supported conversation languages: `zh`, `en`, `ja`, `ko`, `es`, `fr`, `de`, `ru`, `pt`
 
 ## Install
 
 ### Claude Code
 
 ```bash
-git clone --recurse-submodules https://github.com/EricArcha/prompt-wizard.git ~/.claude/skills/prompt-wizard
-```
-
-For shorter trigger, add to `~/.claude/settings.json`:
-```json
-{
-  "skillAliases": {
-    "wizard": "prompt-wizard"
-  }
-}
+git clone https://github.com/EricArcha/prompt-wizard.git ~/.claude/skills/prompt-wizard
 ```
 
 ### OpenClaw
 
 ```bash
-git clone --recurse-submodules https://github.com/EricArcha/prompt-wizard.git ~/.openclaw/skills/prompt-wizard
+git clone https://github.com/EricArcha/prompt-wizard.git ~/.openclaw/skills/prompt-wizard
 ```
 
 Or symlink to share with Claude Code:
@@ -61,21 +59,23 @@ npx clawhub@latest install prompt-wizard
 
 ### Update the prompt library
 
-After installation, the case library is version-pinned. To pull the latest community prompts:
+The case library is bundled with the skill. To fetch the latest community prompts:
 
 ```
 /update
 ```
 
-This runs `git pull` on the embedded [awesome-gpt-image-2-prompts](https://github.com/EvoLinkAI/awesome-gpt-image-2-prompts) dataset and updates the version tracked in `config.json`.
+This fetches the latest version of [awesome-gpt-image-2-prompts](https://github.com/EvoLinkAI/awesome-gpt-image-2-prompts) and updates the version in `config.json`.
 
 ## How It Works
 
 Prompt Wizard is built on analysis of 175+ community-verified GPT-Image-2 prompts. It encodes the patterns that consistently produce high-quality results:
 
-1. **6-dimension coverage**: Subject → Environment → Lighting → Composition → Style → Technical
-2. **Technical vocabulary**: Lens specs, lighting setups, film types, camera angles
-3. **Case references**: Links to real examples so you can study what works
+1. **Market-aware direction** — aligns aesthetic to target audience (Chinese/Japanese/Korean/Western/global)
+2. **Style anchoring** — matches your vision to proven case patterns before generation
+3. **6-dimension coverage** — Subject → Environment → Lighting → Composition → Style → Technical
+4. **English output** — all prompts generated in English for optimal ChatGPT Image 2 performance
+5. **Case references with images** — local file paths so you can view reference images directly
 
 ## File Structure
 
@@ -89,13 +89,13 @@ prompt-wizard/
 ├── scripts/
 │   └── update-prompts.sh         # Library update script
 ├── data/
-│   └── awesome-gpt-image-2-prompts/  # Case library
+│   └── awesome-gpt-image-2-prompts/  # Bundled case library (~88MB, 500+ files)
 └── config.json                   # Version + preferences
 ```
 
 ## Credits
 
-- Case library: [awesome-gpt-image-2-prompts](https://github.com/EvoLinkAI/awesome-gpt-image-2-prompts) (CC BY 4.0) by EvoLinkAI and community contributors
+- Case library: [awesome-gpt-image-2-prompts](https://github.com/EvoLinkAI/awesome-gpt-image-2-prompts) (CC BY 4.0) by EvoLinkAI and community
 - Skill design: built for Claude Code and OpenClaw
 
 ## License

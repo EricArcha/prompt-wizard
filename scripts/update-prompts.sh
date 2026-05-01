@@ -24,7 +24,7 @@ if [ "$OLD_VERSION" = "$NEW_VERSION" ]; then
   exit 0
 fi
 
-CHANGES=$(cd "$TMP_DIR" && git log --oneline "${OLD_VERSION}..${NEW_VERSION}" 2>/dev/null || echo "(history unavailable)")
+CHANGES=$(cd "$TMP_DIR" && git log -1 --format='%s' 2>/dev/null || echo "")
 
 rm -rf "$TMP_DIR/.git"
 rm -rf "$LIB_DIR"
