@@ -12,9 +12,9 @@
 
 > Animated showcase of Prompt Wizard's workflow and features (20s).
 
-[![Prompt Wizard Demo](https://github.com/EricArcha/prompt-wizard/raw/main/demo/demo-animation-poster.jpg)](https://github.com/EricArcha/prompt-wizard/raw/main/demo/demo-animation-bgm.mp4)
+[![Prompt Wizard Demo](https://github.com/EricArcha/prompt-wizard/releases/download/v1.0-demo/demo-animation-bgm.gif)](https://github.com/EricArcha/prompt-wizard/releases/download/v1.0-demo/demo-animation-bgm.mp4)
 
-*Click the image above to watch the demo video, or view the [animated GIF](https://github.com/EricArcha/prompt-wizard/raw/main/demo/demo-animation-bgm.gif).*
+*Click the GIF to watch the full MP4 demo with audio.*
 
 Also check the [Landing Page](https://htmlpreview.github.io/?https://github.com/EricArcha/prompt-wizard/blob/main/demo/landing.html) for a full feature overview.
 

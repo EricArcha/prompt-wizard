@@ -12,9 +12,9 @@
 
 > Prompt Wizard 工作流与功能展示（20 秒）。
 
-[![Prompt Wizard 演示](https://github.com/EricArcha/prompt-wizard/raw/main/demo/demo-animation-poster.jpg)](https://github.com/EricArcha/prompt-wizard/raw/main/demo/demo-animation-bgm.mp4)
+[![Prompt Wizard 演示](https://github.com/EricArcha/prompt-wizard/releases/download/v1.0-demo/demo-animation-bgm.gif)](https://github.com/EricArcha/prompt-wizard/releases/download/v1.0-demo/demo-animation-bgm.mp4)
 
-*点击图片观看演示视频，或查看[动画 GIF](https://github.com/EricArcha/prompt-wizard/raw/main/demo/demo-animation-bgm.gif)。*
+*点击 GIF 观看含音频的完整 MP4 演示。*
 
 也可查看[功能落地页](https://htmlpreview.github.io/?https://github.com/EricArcha/prompt-wizard/blob/main/demo/landing.html)了解完整功能概览。
 
