@@ -4,6 +4,11 @@ All notable changes to Prompt Wizard will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 
+## [1.0.4] — 2026-05-02
+
+### Fixed
+- CHANGELOG: restored correct 1.0.1 and 1.0.2 content after a version split edit error corrupted the heading structure
+
 ## [1.0.3] — 2026-05-02
 
 ### Fixed
