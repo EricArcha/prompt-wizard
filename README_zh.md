@@ -12,11 +12,11 @@
 
 > Prompt Wizard 工作流与功能展示（20 秒）。
 
-<video src="demo/demo-animation-bgm.mp4" controls width="100%" poster="demo/demo-animation-poster.jpg">
+<video src="https://github.com/EricArcha/prompt-wizard/raw/main/demo/demo-animation-bgm.mp4" controls width="100%" poster="https://github.com/EricArcha/prompt-wizard/raw/main/demo/demo-animation-poster.jpg">
   您的浏览器不支持视频播放 — <a href="demo/demo-animation-bgm.mp4">下载 MP4</a>
 </video>
 
-也可查看[功能落地页](demo/landing.html)了解完整功能概览。
+也可查看[功能落地页](https://htmlpreview.github.io/?https://github.com/EricArcha/prompt-wizard/blob/main/demo/landing.html)了解完整功能概览。
 
 ---
 

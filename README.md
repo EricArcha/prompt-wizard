@@ -12,11 +12,11 @@
 
 > Animated showcase of Prompt Wizard's workflow and features (20s).
 
-<video src="demo/demo-animation-bgm.mp4" controls width="100%" poster="demo/demo-animation-poster.jpg">
+<video src="https://github.com/EricArcha/prompt-wizard/raw/main/demo/demo-animation-bgm.mp4" controls width="100%" poster="https://github.com/EricArcha/prompt-wizard/raw/main/demo/demo-animation-poster.jpg">
   Your browser doesn't support video — <a href="demo/demo-animation-bgm.mp4">download MP4</a>
 </video>
 
-Also check the [Landing Page](demo/landing.html) for a full feature overview.
+Also check the [Landing Page](https://htmlpreview.github.io/?https://github.com/EricArcha/prompt-wizard/blob/main/demo/landing.html) for a full feature overview.
 
 ---
 
