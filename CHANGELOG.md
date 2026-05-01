@@ -21,6 +21,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/).
 - Multi mode ≥4 strategy now requires first-prompt confirmation before generating remaining prompts
 - Output Format: Related Cases section now mandatory
 
+### Fixed
+- **update-prompts.sh**: light install (ClawHub without images) now detected and forces full download even when version matches
+- **Output Format**: added explicit image-file-existence check before displaying fallback message
+- **≥4 GATE**: added explicit "FULL Output Format" requirement to prevent agent using shortened confirmation format
+- Display step clarified as per-prompt (not end-of-session summary)
+
 ## [1.0.1] — 2026-05-01
 
 ### Added

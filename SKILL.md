@@ -123,13 +123,13 @@ Multi-prompt generation. Generate multiple prompts in one session.
 3. **Market question** — Same as `/wizard` mode.
 4. **Dimension collect** — First, silently search the case library for 2-3 matching cases in the identified category (use `grep` as described in Case Library Usage). You don't need to present cases interactively unless the user asks, but you MUST ground your dimension questions and any style direction suggestions in discovered case techniques. If no cases match, inform the user before proceeding (see Workflow Compliance). Then collect core dimensions (subject, environment, lighting, composition, style, technical) for the base concept.
 5. **Generate by strategy:**
-   - **≤3 prompts** — Collect all dimensions for each variant, batch generate all prompts (each case-grounded), display one by one with refine offer for each.
+   - **≤3 prompts** — Collect all dimensions for each variant, batch generate all prompts (each case-grounded), display one by one using the full Output Format (🖼️ Prompt + 🔍 Key Choices + 📚 Related Cases + 🔄 Refine).
    - **≥4 prompts or series/narrative:**
-     - **Step A**: Generate ONLY prompt #1. It must be case-grounded (cite the reference cases used).
+     - **Step A**: Generate ONLY prompt #1 using the FULL Output Format (🖼️ Prompt + 🔍 Key Choices + 📚 Related Cases + 🔄 Refine). Do NOT use a shortened/summary format. The prompt must be case-grounded (cite the reference cases used).
      - **⛔ GATE: STOP.** Do NOT generate any more prompts. Wait for user to confirm prompt #1's style and quality.
-     - **Step B**: Only after user confirms, generate remaining prompts ONE AT A TIME, each case-grounded, with a refine offer after each.
+     - **Step B**: Only after user confirms, generate remaining prompts ONE AT A TIME, each in the full Output Format, each case-grounded, with a refine offer after each.
      - **NEVER generate all prompts at once in this mode.** The first-prompt review is the user's only chance to course-correct before all outputs are produced.
-6. **Display** — Numbered output with each prompt, Key Choices, and Refine entry. Summary of all variants at end.
+6. **Display** — Show EACH prompt individually in the full Output Format immediately after generation. After all prompts are done, present a summary table of all variants.
 
 **Scenarios:**
 - **Same concept, multiple variations** — Different lighting, composition, or style for the same subject
@@ -173,7 +173,7 @@ Browse the case library. Without argument: list 7 categories. With category: sea
 
 ### /wizard update-library
 
-Execute `{baseDir}/scripts/update-prompts.sh` and present its output verbatim. The script handles everything — cloning, changelog, version update. Do NOT run additional git commands in the data directory. The data directory has no .git; git would walk up to the skill repo and show wrong history.
+Execute `{baseDir}/scripts/update-prompts.sh` and present its output verbatim. The script handles everything — cloning, changelog, version update, and light→full install upgrade when images are missing. Do NOT run additional git commands in the data directory. The data directory has no .git; git would walk up to the skill repo and show wrong history.
 
 ### /wizard lang [code]
 
@@ -192,6 +192,8 @@ Display version information. Read `config.json` for library version and `CHANGEL
 Skill version:  {from CHANGELOG.md}
 Library:        {prompt_library_version from config.json}
 Library updated:{prompt_library_updated from config.json}
+
+To check for updates: `git pull` (git install) or `clawhub search prompt-wizard` (ClawHub install)
 ```
 
 ## Language Adaptation
@@ -229,8 +231,11 @@ Library updated:{prompt_library_updated from config.json}
 
 The Related Cases section is MANDATORY — every generated prompt must include at least one case reference. If no close match exists, cite the nearest case(s) and note the adaptation.
 
+Before each case entry, check if the image file exists locally:
+`Bash(ls data/awesome-gpt-image-2-prompts/images/{category}_case{N}/output.jpg)`
+
 - **{Case title}** — {relevance note}
-  🖼️ {local image path or "(`/wizard update-library` to view images)"}
+  🖼️ {if image file exists: show the local path, e.g. `data/awesome-gpt-image-2-prompts/images/poster_case144/output.jpg`; if image file does NOT exist: "(`/wizard update-library` to download images)"}
   🔗 {x.com link}
 
 - **{Case title}** — {relevance note}
@@ -293,6 +298,7 @@ These are known failure modes. If you catch yourself doing any of these, STOP an
 | Skipping confirmation gates | "It's more efficient to batch" | Confirmation gates are mandatory correction opportunities |
 | Citing cases from memory | "I remember this case" | Always grep/search the library; memory is unreliable |
 | Skipping case search in multi mode | "Multi mode doesn't require it" | Multi mode requires silent case search during Dimension Collect |
+| Using shortened format for confirmation | "This is just a preview, full format comes later" | Every prompt uses full Output Format (🖼️+🔍+📚+🔄) regardless of confirmation stage |
 
 ## Tone
 
