@@ -10,8 +10,6 @@
 
 ## 演示视频
 
-> Prompt Wizard 工作流与功能展示（20 秒）。
-
 [![Prompt Wizard 演示](https://github.com/EricArcha/prompt-wizard/releases/download/v1.0-demo/demo-animation-bgm.gif)](https://github.com/EricArcha/prompt-wizard/releases/download/v1.0-demo/demo-animation-bgm.mp4)
 
 *点击 GIF 观看含音频的完整 MP4 演示。*

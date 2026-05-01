@@ -10,8 +10,6 @@
 
 ## Demo
 
-> Animated showcase of Prompt Wizard's workflow and features (20s).
-
 [![Prompt Wizard Demo](https://github.com/EricArcha/prompt-wizard/releases/download/v1.0-demo/demo-animation-bgm.gif)](https://github.com/EricArcha/prompt-wizard/releases/download/v1.0-demo/demo-animation-bgm.mp4)
 
 *Click the GIF to watch the full MP4 demo with audio.*
